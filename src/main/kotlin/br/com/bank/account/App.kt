@@ -29,21 +29,17 @@ fun main(args: Array<String>) {
         .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
         .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 
-    reader.use {
-        it.lines().forEach { line ->
-            if (line == "0") {
-                println(content.toString())
-                exitProcess(0)
-            } else {
-                val account = if (line.contains("account")) mapper.readValue(
-                    line,
-                    Account::class.java
-                ) else {
-                    mapper.readValue(line, Transaction::class.java)
-                }
-
-                println(account)
+    while (true) {
+        val read = readLine()!!
+        val event = with(read) {
+            when {
+                contains("account") -> mapper.readValue(read, Account::class.java)
+                contains("transaction") -> mapper.readValue(read, Transaction::class.java)
+                equals("0") -> exitProcess(0)
+                else -> read
             }
         }
+
+        println(event)
     }
 }
