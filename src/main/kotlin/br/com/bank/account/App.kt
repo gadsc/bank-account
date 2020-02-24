@@ -12,7 +12,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 class App {
     val greeting: String
         get() {
-            return "Operations in a specific account!\nPress 0 to exit..."
+            return "Operations in a specific account!\nPress enter to stop input..."
         }
 }
 
@@ -25,10 +25,18 @@ fun main(args: Array<String>) {
         .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     val events: List<String> = inputLoop()
 
-    events.forEach { println(it) }
+    val eventsMapped = events.map {
+        if (it.contains("account")) {
+            mapper.readValue(it, AccountRequest::class.java)
+        } else {
+            mapper.readValue(it, TransactionRequest::class.java)
+        }
+    }
+
+    eventsMapped.forEach { println(it) }
 }
 
-fun inputLoop(exitCode: String = "0"): List<String> {
+fun inputLoop(exitCode: String = ""): List<String> {
     val read = readLine()!!
     val events: MutableList<String> = mutableListOf()
 
