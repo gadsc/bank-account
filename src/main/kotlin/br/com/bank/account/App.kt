@@ -3,13 +3,47 @@
  */
 package br.com.bank.account
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import kotlin.system.exitProcess
+
 class App {
     val greeting: String
         get() {
-            return "Hello world."
+            return "Operations in a specific account!\nPress 0 to exit..."
         }
 }
 
 fun main(args: Array<String>) {
     println(App().greeting)
+    val reader = BufferedReader(InputStreamReader(System.`in`))
+    val content = StringBuilder()
+    val mapper = ObjectMapper().registerModule(KotlinModule())
+        .registerModule(JavaTimeModule())
+        .enable(SerializationFeature.WRAP_ROOT_VALUE)
+        .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
+        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+
+    reader.use {
+        it.lines().forEach { line ->
+            if (line == "0") {
+                println(content.toString())
+                exitProcess(0)
+            } else {
+                val account = if (line.contains("account")) mapper.readValue(
+                    line,
+                    Account::class.java
+                ) else {
+                    mapper.readValue(line, Transaction::class.java)
+                }
+
+                println(account)
+            }
+        }
+    }
 }
