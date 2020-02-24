@@ -18,6 +18,7 @@ class App {
 
 fun main(args: Array<String>) {
     println(App().greeting)
+    val accountRepository = AccountRepository()
     val mapper = ObjectMapper().registerModule(KotlinModule())
         .registerModule(JavaTimeModule())
         .enable(SerializationFeature.WRAP_ROOT_VALUE)
@@ -33,7 +34,16 @@ fun main(args: Array<String>) {
         }
     }
 
-    eventsMapped.forEach { println(it) }
+    eventsMapped.forEach {
+        if (it is AccountRequest) {
+            accountRepository.createAccount(Account.from(it))
+        } else {
+            val transaction = Transaction.from(it as TransactionRequest)
+            val account = accountRepository.findActiveAccount()?.commitTransaction(transaction = transaction)
+            accountRepository.updateActiveAccount(account!!)
+            println(account)
+        }
+    }
 }
 
 fun inputLoop(exitCode: String = ""): List<String> {
