@@ -8,9 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import kotlin.system.exitProcess
 
 class App {
     val greeting: String
@@ -21,25 +18,26 @@ class App {
 
 fun main(args: Array<String>) {
     println(App().greeting)
-    val reader = BufferedReader(InputStreamReader(System.`in`))
-    val content = StringBuilder()
     val mapper = ObjectMapper().registerModule(KotlinModule())
         .registerModule(JavaTimeModule())
         .enable(SerializationFeature.WRAP_ROOT_VALUE)
         .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
         .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+    val events: List<String> = inputLoop()
 
-    while (true) {
-        val read = readLine()!!
-        val event = with(read) {
-            when {
-                contains("account") -> mapper.readValue(read, Account::class.java)
-                contains("transaction") -> mapper.readValue(read, Transaction::class.java)
-                equals("0") -> exitProcess(0)
-                else -> read
-            }
-        }
+    events.forEach { println(it) }
+}
 
-        println(event)
+fun inputLoop(exitCode: String = "0"): List<String> {
+    val read = readLine()!!
+    val events: MutableList<String> = mutableListOf()
+
+    if (read == exitCode) {
+        println("Exiting with code $read bye bye!")
+    } else {
+        events.add(read)
+        events.addAll(inputLoop(exitCode = exitCode))
     }
+
+    return events.toList()
 }
