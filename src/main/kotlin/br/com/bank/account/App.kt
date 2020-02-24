@@ -3,13 +3,49 @@
  */
 package br.com.bank.account
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+
 class App {
     val greeting: String
         get() {
-            return "Hello world."
+            return "Operations in a specific account!\nPress enter to stop input..."
         }
 }
 
 fun main(args: Array<String>) {
     println(App().greeting)
+    val mapper = ObjectMapper().registerModule(KotlinModule())
+        .registerModule(JavaTimeModule())
+        .enable(SerializationFeature.WRAP_ROOT_VALUE)
+        .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
+        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+    val events: List<String> = inputLoop()
+
+    val eventsMapped = events.map {
+        if (it.contains("account")) {
+            mapper.readValue(it, AccountRequest::class.java)
+        } else {
+            mapper.readValue(it, TransactionRequest::class.java)
+        }
+    }
+
+    eventsMapped.forEach { println(it) }
+}
+
+fun inputLoop(exitCode: String = ""): List<String> {
+    val read = readLine()!!
+    val events: MutableList<String> = mutableListOf()
+
+    if (read == exitCode) {
+        println("Exiting with code $read bye bye!")
+    } else {
+        events.add(read)
+        events.addAll(inputLoop(exitCode = exitCode))
+    }
+
+    return events.toList()
 }
