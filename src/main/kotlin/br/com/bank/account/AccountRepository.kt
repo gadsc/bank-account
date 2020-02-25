@@ -1,21 +1,16 @@
 package br.com.bank.account
 
-class AccountRepository {
+object AccountRepository {
     private var createdAccount: Account? = null
 
-    fun createAccount(account: Account) = if (createdAccount == null) {
+    fun createAccount(account: Account): Pair<Account, List<Violation>> = if (createdAccount == null) {
         createdAccount = account
+        Pair(createdAccount!!, emptyList())
     } else {
-        throw RuntimeException("Account already exists")
+        Pair(createdAccount!!, listOf(Violation(key = "account-already-initialized", message = "Account already exists")))
     }
 
-    fun findActiveAccount(): Account? = with(createdAccount) {
-        when {
-            this == null -> throw RuntimeException("Account not initialized")
-            !this.activeCard -> throw RuntimeException("Card not active")
-            else -> this
-        }
-    }
+    fun findActiveAccount(): Account? = createdAccount
 
     fun updateActiveAccount(account: Account): Account {
         createdAccount = account
