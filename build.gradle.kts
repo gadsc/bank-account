@@ -36,3 +36,7 @@ application {
     // Define the main class for the application.
     mainClassName = "br.com.bank.account.AppKt"
 }
+
+val run by tasks.getting(JavaExec::class) {
+    standardInput = System.`in`
+}
