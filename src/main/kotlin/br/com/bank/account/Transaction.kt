@@ -11,14 +11,14 @@ data class Transaction(val merchant: String, val amount: Long, val time: ZonedDa
         )
     }
 
-    fun commit(account: Account?): Pair<Account?, List<Violation>> = when {
-        account == null -> Pair(
-            first = null,
-            second = listOf(Violation(key = "account-not-initialized", message = "Account not initialized"))
+    fun commit(account: Account?): OperationResult = when {
+        account == null -> OperationResult(
+            account = null,
+            violations = listOf(Violation(key = "account-not-initialized", message = "Account not initialized"))
         )
-        !account.activeCard -> Pair(
-            first = account,
-            second = listOf(Violation(key = "card-not-active", message = "Card not active"))
+        !account.activeCard -> OperationResult(
+            account = account,
+            violations = listOf(Violation(key = "card-not-active", message = "Card not active"))
         )
         else -> account.commitTransaction(transaction = this)
     }

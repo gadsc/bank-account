@@ -10,7 +10,7 @@ object AccountRepository {
         Pair(createdAccount!!, listOf(Violation(key = "account-already-initialized", message = "Account already exists")))
     }
 
-    fun findActiveAccount(): Account? = createdAccount
+    fun find(): Account? = createdAccount
 
     fun updateActiveAccount(account: Account): Account {
         createdAccount = account

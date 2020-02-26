@@ -18,31 +18,33 @@ class App {
 
 fun main(args: Array<String>) {
     println(App().greeting)
-    val accountRepository = AccountRepository
-    val mapper = ObjectMapper().registerModule(KotlinModule())
+    val mapper = getCustomJacksonMapper()
+
+    while(true) getMappedEvents(inputLoop(), mapper)
+        .map { EventProcessor.process(it) }
+}
+
+private fun getCustomJacksonMapper(): ObjectMapper =
+    ObjectMapper().registerModule(KotlinModule())
         .registerModule(JavaTimeModule())
         .enable(SerializationFeature.WRAP_ROOT_VALUE)
         .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
         .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-    val events: List<String> = inputLoop()
 
-    val eventsMapped = events.map {
-        if (it.contains("account")) {
-            mapper.readValue(it, AccountRequest::class.java)
-        } else {
-            mapper.readValue(it, TransactionRequest::class.java)
-        }
-    }
+enum class OperationIdentifier(val identifier: String) {
+    ACCOUNT("account"),
+    TRANSACTION("transaction")
+}
 
-    eventsMapped.forEach {
-        if (it is AccountRequest) {
-            val createdAccount = accountRepository.createAccount(Account.from(it))
-            println(mapper.writeValueAsString(AccountResponse.from(createdAccount)))
+private fun getMappedEvents(
+    events: List<String>,
+    mapper: ObjectMapper
+): List<Any> {
+    return events.map {
+        if (it.contains(OperationIdentifier.ACCOUNT.identifier)) {
+            mapper.readValue(it, AccountRequest::class.java) as Any
         } else {
-            val transaction = Transaction.from(it as TransactionRequest)
-            val account: Pair<Account?, List<Violation>> = transaction.commit(accountRepository.findActiveAccount())
-            val updatedAccount = account?.first?.let { acc -> accountRepository.updateActiveAccount(acc) }
-            println(mapper.writeValueAsString(AccountResponse.from(Pair(updatedAccount, account.second))))
+            mapper.readValue(it, TransactionRequest::class.java) as Any
         }
     }
 }
