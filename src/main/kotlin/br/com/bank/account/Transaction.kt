@@ -11,7 +11,7 @@ data class Transaction(val merchant: String, val amount: Long, val time: ZonedDa
         )
     }
 
-    fun commit(account: Account): Pair<Account?, List<Violation>> = when {
+    fun commit(account: Account?): Pair<Account?, List<Violation>> = when {
         account == null -> Pair(
             first = null,
             second = listOf(Violation(key = "account-not-initialized", message = "Account not initialized"))

@@ -40,9 +40,9 @@ fun main(args: Array<String>) {
             println(mapper.writeValueAsString(AccountResponse.from(createdAccount)))
         } else {
             val transaction = Transaction.from(it as TransactionRequest)
-            val account = accountRepository.findActiveAccount()?.commitTransaction(transaction = transaction)
-            val updatedAccount = account?.first?.let { it1 -> accountRepository.updateActiveAccount(it1) }
-            println(mapper.writeValueAsString(AccountResponse.from(Pair(updatedAccount!!, account.second))))
+            val account: Pair<Account?, List<Violation>> = transaction.commit(accountRepository.findActiveAccount())
+            val updatedAccount = account?.first?.let { acc -> accountRepository.updateActiveAccount(acc) }
+            println(mapper.writeValueAsString(AccountResponse.from(Pair(updatedAccount, account.second))))
         }
     }
 }
