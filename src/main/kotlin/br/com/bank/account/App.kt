@@ -41,8 +41,8 @@ fun main(args: Array<String>) {
         } else {
             val transaction = Transaction.from(it as TransactionRequest)
             val account = accountRepository.findActiveAccount()?.commitTransaction(transaction = transaction)
-            accountRepository.updateActiveAccount(account!!)
-            println(account)
+            val updatedAccount = account?.first?.let { it1 -> accountRepository.updateActiveAccount(it1) }
+            println(mapper.writeValueAsString(AccountResponse.from(Pair(updatedAccount!!, account.second))))
         }
     }
 }

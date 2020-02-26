@@ -40,9 +40,11 @@ data class Account(
     }
 
     private fun highFrequencyViolation(transactionInterval: List<Transaction>): Violation? =
-        if (transactionInterval.size >= 3) {
-            Violation(key = "High frequency small interval", message = "High frequency small interval")
-        } else null
+        if (transactionInterval.size >= 2) {
+            Violation(key = "high-frequency-small-interval", message = "High frequency small interval")
+        } else {
+            null
+        }
 
 
     private fun doubleTransactionValidation(
@@ -50,7 +52,7 @@ data class Account(
         transaction: Transaction
     ): Violation? =
         if (transactionInterval.any { it.merchant == transaction.merchant && it.amount == transaction.amount }) {
-            Violation(key = "Doubled transaction", message = "Doubled transaction")
+            Violation(key = "doubled-transaction", message = "Doubled transaction")
         } else {
             null
         }
@@ -68,7 +70,7 @@ data class Account(
             }
         }
 
-    fun executeTransaction(transaction: Transaction) = this.copy(
+    private fun executeTransaction(transaction: Transaction) = this.copy(
         availableLimit = this.availableLimit - transaction.amount,
         transactions = transactions + transaction
     )
