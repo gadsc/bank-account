@@ -12,30 +12,65 @@ data class Account(
         )
     }
 
-    fun commitTransaction(transaction: Transaction): Account =
-        if (availableLimit < transaction.amount) {
-            throw RuntimeException("Insufficient Limit")
+    fun getViolations(transaction: Transaction): List<Violation> {
+        val limitViolation: List<Violation> = if (availableLimit < transaction.amount) {
+            listOf(
+                Violation(
+                    key = "insufficient-limit",
+                    message = "Insufficient Limit"
+                )
+            )
         } else {
-            val transactionInterval = transactions.filter { it.time.isBefore(transaction.time.minusMinutes(2)) || it.time.isEqual(transaction.time) }
-            if (transactionInterval.isNotEmpty()) {
-                if (transactionInterval.any { it.merchant == transaction.merchant && it.amount == transaction.amount }) throw RuntimeException(
-                    "Doubled transaction"
-                )
-                else if (transactionInterval.size >= 3) {
-                    throw RuntimeException("High frequency small interval")
-                } else {
-                    Account(
-                        activeCard = this.activeCard,
-                        availableLimit = this.availableLimit - transaction.amount,
-                        transactions = transactions + transaction
-                    )
-                }
+            emptyList()
+        }
+
+        val transactionInterval =
+            transactions.filter { it.time.isBefore(transaction.time.minusMinutes(2)) || it.time.isEqual(transaction.time) }
+
+        val intervalViolations: List<Violation> = if (transactionInterval.isNotEmpty()) {
+            listOfNotNull(
+                doubleTransactionValidation(transactionInterval, transaction),
+                highFrequencyViolation(transactionInterval)
+            )
+        } else {
+            emptyList()
+        }
+
+        return limitViolation + intervalViolations
+    }
+
+    private fun highFrequencyViolation(transactionInterval: List<Transaction>): Violation? =
+        if (transactionInterval.size >= 3) {
+            Violation(key = "High frequency small interval", message = "High frequency small interval")
+        } else null
+
+
+    private fun doubleTransactionValidation(
+        transactionInterval: List<Transaction>,
+        transaction: Transaction
+    ): Violation? =
+        if (transactionInterval.any { it.merchant == transaction.merchant && it.amount == transaction.amount }) {
+            Violation(key = "Doubled transaction", message = "Doubled transaction")
+        } else {
+            null
+        }
+
+    fun commitTransaction(transaction: Transaction): Pair<Account, List<Violation>> =
+        if (availableLimit < transaction.amount) {
+            Pair(this, listOf(Violation(key = "insufficient-limit", message = "Insufficient Limit")))
+        } else {
+            val violations = getViolations(transaction)
+
+            if (violations.isEmpty()) {
+                Pair(executeTransaction(transaction), emptyList())
             } else {
-                Account(
-                    activeCard = this.activeCard,
-                    availableLimit = this.availableLimit - transaction.amount,
-                    transactions = transactions + transaction
-                )
+                Pair(this, violations)
             }
         }
+
+    fun executeTransaction(transaction: Transaction) = this.copy(
+        availableLimit = this.availableLimit - transaction.amount,
+        transactions = transactions + transaction
+    )
+
 }
