@@ -1,9 +1,7 @@
 package br.com.bank.account
 
-import com.fasterxml.jackson.databind.ObjectMapper
-
 class StdInDataStream(private val eventConverter: EventConverter) : DataStream {
-    override fun start() {
-        eventConverter.convertEvents(StdInReader.inputLoopRec()).map { EventProcessorFactory.process(it) }
+    override fun startProcessing(events: List<String>) {
+        eventConverter.convertEvents(events).map { EventProcessorFactory.process(it) }
     }
 }

@@ -1,5 +1,5 @@
 package br.com.bank.account
 
 interface DataStream {
-    fun start()
+    fun startProcessing(events: List<String>)
 }

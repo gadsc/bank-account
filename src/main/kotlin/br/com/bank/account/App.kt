@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import javax.xml.crypto.Data
 
 class App {
     val greeting: String
@@ -22,10 +21,7 @@ fun main(args: Array<String>) {
     val mapper = getCustomJacksonMapper()
     val dataStream: DataStream = StdInDataStream(eventConverter = EventConverter(mapper))
 
-    while (true) dataStream.start()
-
-//    while (true) getMappedEvents(inputLoopRec(), mapper)
-//        .map { EventProcessorFactory.process(it) }
+    dataStream.startProcessing(StdInReader.inputLoopRec())
 }
 
 private fun getCustomJacksonMapper(): ObjectMapper =
@@ -39,31 +35,3 @@ enum class OperationIdentifier(val identifier: String) {
     ACCOUNT("account"),
     TRANSACTION("transaction")
 }
-
-//private fun getMappedEvents(
-//    events: List<String>,
-//    mapper: ObjectMapper
-//): List<BankEvent> {
-//    return events.map {
-//        if (it.contains(OperationIdentifier.ACCOUNT.identifier)) {
-//            mapper.readValue(it, AccountRequest::class.java) as BankEvent
-//        } else {
-//            mapper.readValue(it, TransactionRequest::class.java) as BankEvent
-//        }
-//    }
-//}
-
-//fun inputLoop(exitCode: String = ""): List<String> {
-//    val read = readLine()!!
-//    val events: MutableList<String> = mutableListOf()
-//
-//    if (read == exitCode) {
-//        println("Exiting with code $read bye bye!")
-//    } else {
-//        events.add(read)
-//        events.addAll(inputLoop(exitCode = exitCode))
-//    }
-//
-//    return events.toList()
-//}
-
