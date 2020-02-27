@@ -20,8 +20,8 @@ fun main(args: Array<String>) {
     println(App().greeting)
     val mapper = getCustomJacksonMapper()
 
-    while(true) getMappedEvents(inputLoop(), mapper)
-        .map { EventProcessor.process(it) }
+    while (true) getMappedEvents(inputLoopRec(), mapper)
+        .map { EventProcessorFactory.process(it) }
 }
 
 private fun getCustomJacksonMapper(): ObjectMapper =
@@ -39,26 +39,35 @@ enum class OperationIdentifier(val identifier: String) {
 private fun getMappedEvents(
     events: List<String>,
     mapper: ObjectMapper
-): List<Any> {
+): List<BankEvent> {
     return events.map {
         if (it.contains(OperationIdentifier.ACCOUNT.identifier)) {
-            mapper.readValue(it, AccountRequest::class.java) as Any
+            mapper.readValue(it, AccountRequest::class.java) as BankEvent
         } else {
-            mapper.readValue(it, TransactionRequest::class.java) as Any
+            mapper.readValue(it, TransactionRequest::class.java) as BankEvent
         }
     }
 }
 
-fun inputLoop(exitCode: String = ""): List<String> {
-    val read = readLine()!!
-    val events: MutableList<String> = mutableListOf()
+//fun inputLoop(exitCode: String = ""): List<String> {
+//    val read = readLine()!!
+//    val events: MutableList<String> = mutableListOf()
+//
+//    if (read == exitCode) {
+//        println("Exiting with code $read bye bye!")
+//    } else {
+//        events.add(read)
+//        events.addAll(inputLoop(exitCode = exitCode))
+//    }
+//
+//    return events.toList()
+//}
 
-    if (read == exitCode) {
-        println("Exiting with code $read bye bye!")
-    } else {
-        events.add(read)
-        events.addAll(inputLoop(exitCode = exitCode))
-    }
-
-    return events.toList()
-}
+tailrec fun inputLoopRec(events: List<String> = emptyList(), exitCode: String = ""): List<String> =
+    readLine()?.let {
+        if (it == exitCode) {
+            events
+        } else {
+            inputLoopRec(events = events + it, exitCode = exitCode)
+        }
+    } ?: emptyList()

@@ -9,4 +9,4 @@ data class AccountRequest(
     val activeCard: Boolean,
     @JsonProperty("available-limit")
     val availableLimit: Long
-)
+): BankEvent

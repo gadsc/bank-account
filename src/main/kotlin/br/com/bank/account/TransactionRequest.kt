@@ -11,4 +11,4 @@ data class TransactionRequest(
     @JsonProperty("time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     val time: ZonedDateTime
-)
+): BankEvent

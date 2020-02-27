@@ -5,7 +5,7 @@ import violation.AccountAlreadyInitializedViolation
 object AccountRepository {
     private var createdAccount: Account? = null
 
-    fun createAccount(account: Account): OperationResult = if (createdAccount == null) {
+    fun createAccount(account: Account?): OperationResult = if (createdAccount == null) {
         createdAccount = account
         OperationResult(createdAccount!!, emptyList())
     } else {
