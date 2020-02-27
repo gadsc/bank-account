@@ -20,7 +20,7 @@ class App {
 fun main(args: Array<String>) {
     println(App().greeting)
     val mapper = getCustomJacksonMapper()
-    val dataStream: DataStream = StdInDataStream(mapper)
+    val dataStream: DataStream = StdInDataStream(eventConverter = EventConverter(mapper))
 
     while (true) dataStream.start()
 
@@ -40,18 +40,18 @@ enum class OperationIdentifier(val identifier: String) {
     TRANSACTION("transaction")
 }
 
-private fun getMappedEvents(
-    events: List<String>,
-    mapper: ObjectMapper
-): List<BankEvent> {
-    return events.map {
-        if (it.contains(OperationIdentifier.ACCOUNT.identifier)) {
-            mapper.readValue(it, AccountRequest::class.java) as BankEvent
-        } else {
-            mapper.readValue(it, TransactionRequest::class.java) as BankEvent
-        }
-    }
-}
+//private fun getMappedEvents(
+//    events: List<String>,
+//    mapper: ObjectMapper
+//): List<BankEvent> {
+//    return events.map {
+//        if (it.contains(OperationIdentifier.ACCOUNT.identifier)) {
+//            mapper.readValue(it, AccountRequest::class.java) as BankEvent
+//        } else {
+//            mapper.readValue(it, TransactionRequest::class.java) as BankEvent
+//        }
+//    }
+//}
 
 //fun inputLoop(exitCode: String = ""): List<String> {
 //    val read = readLine()!!
