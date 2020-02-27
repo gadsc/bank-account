@@ -1,5 +1,7 @@
 package br.com.bank.account
 
+import violation.AccountNotInitializedViolation
+import violation.CardNotActiveViolation
 import java.time.ZonedDateTime
 
 data class Transaction(val merchant: String, val amount: Long, val time: ZonedDateTime) {
@@ -14,11 +16,11 @@ data class Transaction(val merchant: String, val amount: Long, val time: ZonedDa
     fun commit(account: Account?): OperationResult = when {
         account == null -> OperationResult(
             account = null,
-            violations = listOf(Violation(key = "account-not-initialized", message = "Account not initialized"))
+            violations = listOf(AccountNotInitializedViolation())
         )
         !account.activeCard -> OperationResult(
             account = account,
-            violations = listOf(Violation(key = "card-not-active", message = "Card not active"))
+            violations = listOf(CardNotActiveViolation())
         )
         else -> account.commitTransaction(transaction = this)
     }

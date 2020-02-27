@@ -1,13 +1,15 @@
 package br.com.bank.account
 
+import violation.AccountAlreadyInitializedViolation
+
 object AccountRepository {
     private var createdAccount: Account? = null
 
-    fun createAccount(account: Account): Pair<Account, List<Violation>> = if (createdAccount == null) {
+    fun createAccount(account: Account): OperationResult = if (createdAccount == null) {
         createdAccount = account
-        Pair(createdAccount!!, emptyList())
+        OperationResult(createdAccount!!, emptyList())
     } else {
-        Pair(createdAccount!!, listOf(Violation(key = "account-already-initialized", message = "Account already exists")))
+        OperationResult(createdAccount!!, listOf(AccountAlreadyInitializedViolation()))
     }
 
     fun find(): Account? = createdAccount
