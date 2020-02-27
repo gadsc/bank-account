@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import javax.xml.crypto.Data
 
 class App {
     val greeting: String
@@ -19,9 +20,12 @@ class App {
 fun main(args: Array<String>) {
     println(App().greeting)
     val mapper = getCustomJacksonMapper()
+    val dataStream: DataStream = StdInDataStream(mapper)
 
-    while (true) getMappedEvents(inputLoopRec(), mapper)
-        .map { EventProcessorFactory.process(it) }
+    while (true) dataStream.start()
+
+//    while (true) getMappedEvents(inputLoopRec(), mapper)
+//        .map { EventProcessorFactory.process(it) }
 }
 
 private fun getCustomJacksonMapper(): ObjectMapper =
@@ -63,11 +67,3 @@ private fun getMappedEvents(
 //    return events.toList()
 //}
 
-tailrec fun inputLoopRec(events: List<String> = emptyList(), exitCode: String = ""): List<String> =
-    readLine()?.let {
-        if (it == exitCode) {
-            events
-        } else {
-            inputLoopRec(events = events + it, exitCode = exitCode)
-        }
-    } ?: emptyList()
