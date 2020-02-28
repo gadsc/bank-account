@@ -1,5 +1,5 @@
 package br.com.bank.account
 
-interface EventProcessor<T> {
-    fun process(event: T): OperationResult
+interface EventProcessor {
+    fun process(event: Operation): OperationResult
 }

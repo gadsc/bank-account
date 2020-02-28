@@ -9,4 +9,6 @@ data class AccountRequest(
     val activeCard: Boolean,
     @JsonProperty("available-limit")
     val availableLimit: Long
-): BankEvent
+): BankEvent {
+    override fun toOperation(): Operation = Account.from(this)
+}

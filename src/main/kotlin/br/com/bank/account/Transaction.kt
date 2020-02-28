@@ -4,7 +4,7 @@ import violation.AccountNotInitializedViolation
 import violation.CardNotActiveViolation
 import java.time.ZonedDateTime
 
-data class Transaction(val merchant: String, val amount: Long, val time: ZonedDateTime) {
+data class Transaction(val merchant: String, val amount: Long, val time: ZonedDateTime): Operation {
     companion object {
         fun from(transactionRequest: TransactionRequest) = Transaction(
             merchant = transactionRequest.merchant,

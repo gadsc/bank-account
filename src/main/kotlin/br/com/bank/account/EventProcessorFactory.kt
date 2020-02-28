@@ -1,10 +1,10 @@
 package br.com.bank.account
 
 object EventProcessorFactory {
-    fun process(it: BankEvent): OperationResult =
+    fun resolve(it: BankEvent): EventProcessor =
         if (it is AccountRequest) {
-            AccountEventProcessor().process(Account.from(it))
+            AccountEventProcessor()//.process(Account.from(it))
         } else {
-            TransactionEventProcessor().process(Transaction.from(it as TransactionRequest))
+            TransactionEventProcessor()//.process(Transaction.from(it as TransactionRequest))
         }
 }

@@ -9,7 +9,7 @@ data class Account(
     val activeCard: Boolean,
     val availableLimit: Long,
     val transactions: List<Transaction> = emptyList()
-) {
+): Operation {
     companion object {
         fun from(accountRequest: AccountRequest) = Account(
             activeCard = accountRequest.activeCard,
