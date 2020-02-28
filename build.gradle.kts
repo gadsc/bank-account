@@ -5,17 +5,19 @@
  */
 
 plugins {
+    application
     // Apply the Kotlin JVM plugin to add support for Kotlin on the JVM.
     id("org.jetbrains.kotlin.jvm").version("1.3.11")
+    id("com.github.johnrengelman.shadow").version("5.2.0")
 
     // Apply the application plugin to add support for building a CLI application.
-    application
 }
 
 repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -39,4 +41,15 @@ application {
 
 val run by tasks.getting(JavaExec::class) {
     standardInput = System.`in`
+}
+
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    archiveBaseName.set(project.name)
+    archiveClassifier.set("")
+    archiveVersion.set("")
+
+
+    manifest {
+        attributes(mapOf("Main-Class" to "br.com.bank.account.AppKt"))
+    }
 }
