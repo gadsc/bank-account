@@ -1,13 +1,17 @@
 package br.com.bank.account
 
-object StdInReader {
-    tailrec fun inputLoopRec(events: List<String> = emptyList(), exitCode: String = ""): List<String> {
+class StdInReader: Reader {
+    override tailrec fun recursiveRead(events: List<String>, exitCode: String): List<String> {
         val line = readLine().orEmpty()
 
         return if (line == exitCode) {
             events
         } else {
-            inputLoopRec(events = events + line, exitCode = exitCode)
+            recursiveRead(events = events + line, exitCode = exitCode)
         }
     }
+}
+
+interface Reader {
+    fun recursiveRead(events: List<String> = emptyList(), exitCode: String = ""): List<String>
 }

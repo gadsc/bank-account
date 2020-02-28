@@ -19,7 +19,9 @@ class App {
 fun main(args: Array<String>) {
     println(App().greeting)
     val mapper = getCustomJacksonMapper()
-    val dataConsumer: DataConsumer = StdInDataConsumer(operationEventConverter = OperationEventConverter(mapper))
+    val operationConsumer =
+        OperationConsumer(operationEventConverter = OperationEventConverter(mapper), reader = StdInReader())
+    val dataConsumer: DataConsumer = StdInDataConsumer(operationConsumer = operationConsumer)
 
     dataConsumer.batchProcessing()
 }
