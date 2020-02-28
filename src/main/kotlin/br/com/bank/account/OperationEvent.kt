@@ -1,5 +1,5 @@
 package br.com.bank.account
 
-interface BankEvent {
+interface OperationEvent {
     fun toOperation(): Operation
 }

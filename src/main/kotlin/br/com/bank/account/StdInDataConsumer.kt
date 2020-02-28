@@ -1,8 +1,8 @@
 package br.com.bank.account
 
-class StdInDataConsumer(private val eventConverter: EventConverter) : DataConsumer {
+class StdInDataConsumer(private val operationEventConverter: OperationEventConverter) : DataConsumer {
     override fun batchProcessing() {
-        eventConverter.convertEvents(StdInReader.inputLoopRec())
-            .map { EventProcessorFactory.resolve(it).process(it.toOperation()) }
+        operationEventConverter.convertEvents(StdInReader.inputLoopRec())
+            .map { OperationProcessorFactory.resolve(it).process(it.toOperation()) }
     }
 }

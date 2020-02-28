@@ -6,10 +6,10 @@ import java.time.ZonedDateTime
 
 data class Transaction(val merchant: String, val amount: Long, val time: ZonedDateTime): Operation {
     companion object {
-        fun from(transactionRequest: TransactionRequest) = Transaction(
-            merchant = transactionRequest.merchant,
-            amount = transactionRequest.amount,
-            time = transactionRequest.time
+        fun from(transactionOperationEvent: TransactionOperationEvent) = Transaction(
+            merchant = transactionOperationEvent.merchant,
+            amount = transactionOperationEvent.amount,
+            time = transactionOperationEvent.time
         )
     }
 

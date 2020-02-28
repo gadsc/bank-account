@@ -11,9 +11,9 @@ data class Account(
     val transactions: List<Transaction> = emptyList()
 ): Operation {
     companion object {
-        fun from(accountRequest: AccountRequest) = Account(
-            activeCard = accountRequest.activeCard,
-            availableLimit = accountRequest.availableLimit
+        fun from(accountOperationEvent: AccountOperationEvent) = Account(
+            activeCard = accountOperationEvent.activeCard,
+            availableLimit = accountOperationEvent.availableLimit
         )
     }
 
