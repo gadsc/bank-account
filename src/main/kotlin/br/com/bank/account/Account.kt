@@ -1,15 +1,14 @@
 package br.com.bank.account
 
-import violation.DoubledTransactionViolation
-import violation.HighFrequencyViolation
-import violation.InsufficientLimitViolation
-import violation.OperationViolation
+import violation.*
 
 data class Account(
     val activeCard: Boolean,
     val availableLimit: Long,
     val transactions: List<Transaction> = emptyList()
 ): Operation {
+//    override fun validations(): List<OperationValidation> = listOf(AccountAlreadyInitializedViolation())
+
     companion object {
         fun from(accountOperationEvent: AccountOperationEvent) = Account(
             activeCard = accountOperationEvent.activeCard,
