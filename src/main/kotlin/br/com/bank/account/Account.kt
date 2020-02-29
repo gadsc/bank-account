@@ -25,8 +25,7 @@ data class Account(
                 OperationValidation.findViolation({ account != null && !account.activeCard }, CardNotActiveViolation())
 
         fun readyForTransaction(account: Account?) =
-            accountNotInitializedValidation(account) ?: cardNotActiveValidation(account)
-
+                accountNotInitializedValidation(account) ?: cardNotActiveValidation(account)
 
         fun insufficientLimitViolation(account: Account, transaction: Transaction): OperationViolation? =
                 OperationValidation.findViolation({ account.availableLimit < transaction.amount }, InsufficientLimitViolation())
@@ -52,54 +51,13 @@ data class Account(
     private fun getViolations(transaction: Transaction) =
             listOfNotNull(insufficientLimitViolation(this, transaction)) + intervalValidations(transactions, transaction)
 
-//    fun getViolations(transaction: Transaction): List<OperationViolation> {
-//        val limitViolation: List<OperationViolation> = if (availableLimit < transaction.amount) {
-//            listOf(
-//                    InsufficientLimitViolation()
-//            )
-//        } else {
-//            emptyList()
-//        }
-//
-//        val transactionInterval =
-//                transactions.filter { it.time.isBefore(transaction.time.minusMinutes(2)) || it.time.isEqual(transaction.time) }
-//
-//        val intervalViolations: List<OperationViolation> = if (transactionInterval.isNotEmpty()) {
-//            listOfNotNull(
-//                    doubleTransactionValidation(transactionInterval, transaction),
-//                    highFrequencyViolation(transactionInterval)
-//            )
-//        } else {
-//            emptyList()
-//        }
-//
-//        return limitViolation + intervalViolations
-//    }
-
-    private fun highFrequencyViolation(transactionInterval: List<Transaction>): OperationViolation? =
-            OperationValidation.findViolation({ transactionInterval.size >= 2 }, HighFrequencyViolation())
-//            if (transactionInterval.size >= 2) {
-//                HighFrequencyViolation()
-//            } else {
-//                null
-//            }
-
-
-    private fun doubleTransactionValidation(transactionInterval: List<Transaction>, transaction: Transaction): OperationViolation? = OperationValidation
-            .findViolation({
-                transactionInterval
-                        .any { it.merchant == transaction.merchant && it.amount == transaction.amount }
-            }, DoubledTransactionViolation())
-
-    fun commitTransaction(transaction: Transaction): OperationResult {
-        val violations = getViolations(transaction)
-
-        return if (violations.isEmpty()) {
-            OperationResult(account = executeTransaction(transaction), violations = emptyList())
-        } else {
-            OperationResult(account = this, violations = violations)
-        }
-    }
+    fun commitTransaction(transaction: Transaction): OperationResult =
+            getViolations(transaction).let {
+                when {
+                    it.isEmpty() -> OperationResult(account = executeTransaction(transaction), violations = emptyList())
+                    else -> OperationResult(account = this, violations = it)
+                }
+            }
 
     private fun executeTransaction(transaction: Transaction) = this.copy(
             availableLimit = this.availableLimit - transaction.amount,
