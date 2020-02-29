@@ -3,13 +3,14 @@ package br.com.bank.account
 import com.fasterxml.jackson.databind.ObjectMapper
 
 class OperationEventConverter(
-    private val mapper: ObjectMapper
+        private val mapper: ObjectMapper
 ) {
     fun convertEvents(events: List<String>): List<OperationEvent> = events.map { convertEvent(it) }
 
-    private fun convertEvent(event: String): OperationEvent = if (event.contains(OperationIdentifier.ACCOUNT.identifier)) {
-        mapper.readValue(event, AccountOperationEvent::class.java) as OperationEvent
-    } else {
-        mapper.readValue(event, TransactionOperationEvent::class.java) as OperationEvent
+    private fun convertEvent(event: String): OperationEvent = when {
+        event.contains(OperationIdentifier.ACCOUNT.identifier) ->
+            mapper.readValue(event, AccountOperationEvent::class.java) as OperationEvent
+        else ->
+            mapper.readValue(event, TransactionOperationEvent::class.java) as OperationEvent
     }
 }

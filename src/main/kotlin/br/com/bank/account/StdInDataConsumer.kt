@@ -1,10 +1,8 @@
 package br.com.bank.account
 
 class StdInDataConsumer(
-    private val operationConsumer: OperationConsumer
+        private val operationConsumer: OperationConsumer
 ) : DataConsumer {
-    override fun batchProcessing() {
-        operationConsumer.consume()
-            .forEach { OperationProcessorFactory.resolve(it).process(it.toOperation()) }
-    }
+    override fun batchProcessing(): List<OperationResult> = operationConsumer.consume()
+            .map { OperationProcessorFactory.resolve(it).process(it.toOperation()) }
 }

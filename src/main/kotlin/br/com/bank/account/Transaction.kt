@@ -4,6 +4,8 @@ import br.com.bank.account.AccountValidations.readyForTransaction
 import java.time.ZonedDateTime
 
 data class Transaction(val merchant: String, val amount: Long, val time: ZonedDateTime) : Operation {
+    override fun getIdentifier(): OperationIdentifier = OperationIdentifier.TRANSACTION
+
     companion object {
         fun from(transactionOperationEvent: TransactionOperationEvent) = Transaction(
                 merchant = transactionOperationEvent.merchant,

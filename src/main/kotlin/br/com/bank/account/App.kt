@@ -20,20 +20,15 @@ fun main(args: Array<String>) {
     println(App().greeting)
     val mapper = getCustomJacksonMapper()
     val operationConsumer =
-        OperationConsumer(operationEventConverter = OperationEventConverter(mapper), reader = StdInReader())
+            OperationConsumer(operationEventConverter = OperationEventConverter(mapper), reader = StdInReader())
     val dataConsumer: DataConsumer = StdInDataConsumer(operationConsumer = operationConsumer)
 
-    dataConsumer.batchProcessing()
+    dataConsumer.batchProcessing().forEach { println(mapper.writeValueAsString(OperationResultOutput.from(it))) }
 }
 
 private fun getCustomJacksonMapper(): ObjectMapper =
-    ObjectMapper().registerModule(KotlinModule())
-        .registerModule(JavaTimeModule())
-        .enable(SerializationFeature.WRAP_ROOT_VALUE)
-        .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
-        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-
-enum class OperationIdentifier(val identifier: String) {
-    ACCOUNT("account"),
-    TRANSACTION("transaction")
-}
+        ObjectMapper().registerModule(KotlinModule())
+                .registerModule(JavaTimeModule())
+//                .enable(SerializationFeature.WRAP_ROOT_VALUE)
+                .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)

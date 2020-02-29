@@ -1,5 +1,5 @@
 package br.com.bank.account
 
 interface DataConsumer {
-    fun batchProcessing()
+    fun batchProcessing(): List<OperationResult>
 }

@@ -3,7 +3,8 @@ package br.com.bank.account
 import br.com.bank.account.AccountValidations.accountAlreadyInitializedValidation
 
 object AccountRepository {
-    private var createdAccount: Account? = null
+    var createdAccount: Account? = null
+        private set
 
     fun createAccount(account: Account): OperationResult = accountAlreadyInitializedValidation(createdAccount)
             .let {
@@ -16,7 +17,7 @@ object AccountRepository {
                 )
             }
 
-    fun find(): Account? = createdAccount
+//    fun find(): Account? = createdAccount
 
     fun updateActiveAccount(account: Account): Account {
         createdAccount = account

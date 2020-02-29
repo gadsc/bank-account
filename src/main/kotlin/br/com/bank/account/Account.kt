@@ -8,6 +8,8 @@ data class Account(
         val availableLimit: Long,
         val transactions: List<Transaction> = emptyList()
 ) : Operation {
+    override fun getIdentifier(): OperationIdentifier = OperationIdentifier.ACCOUNT
+
     companion object {
         fun from(accountOperationEvent: AccountOperationEvent) = Account(
                 activeCard = accountOperationEvent.activeCard,
@@ -29,5 +31,5 @@ data class Account(
     private fun executeTransaction(transaction: Transaction) = this.copy(
             availableLimit = this.availableLimit - transaction.amount,
             transactions = transactions + transaction
-    )
+    ).apply { AccountRepository.updateActiveAccount(this) }
 }
