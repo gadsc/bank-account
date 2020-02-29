@@ -1,18 +1,11 @@
 package br.com.bank.account
 
-import violation.OperationValidations
+import br.com.bank.account.AccountValidations.accountAlreadyInitializedValidation
 
 object AccountRepository {
     private var createdAccount: Account? = null
 
-//    fun createAccount(account: Account): OperationResult = if (createdAccount == null) {
-//        createdAccount = account
-//        OperationResult(createdAccount!!, emptyList())
-//    } else {
-//        OperationResult(createdAccount!!, listOf(AccountAlreadyInitializedViolation()))
-//    }
-
-    fun createAccount2(account: Account): OperationResult = Account.accountAlreadyInitializedValidation(createdAccount)
+    fun createAccount(account: Account): OperationResult = accountAlreadyInitializedValidation(createdAccount)
             .let {
                 if (it == null) {
                     createdAccount = account

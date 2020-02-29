@@ -1,5 +1,6 @@
 package br.com.bank.account
 
+import br.com.bank.account.AccountValidations.readyForTransaction
 import java.time.ZonedDateTime
 
 data class Transaction(val merchant: String, val amount: Long, val time: ZonedDateTime) : Operation {
@@ -11,7 +12,7 @@ data class Transaction(val merchant: String, val amount: Long, val time: ZonedDa
         )
     }
 
-    fun commit(account: Account?): OperationResult = Account.readyForTransaction(account).let { operationViolation ->
+    fun commit(account: Account?): OperationResult = readyForTransaction(account).let { operationViolation ->
         operationViolation?.let { it -> OperationResult(account, it) }
                 ?: account!!.commitTransaction(transaction = this@Transaction)
     }
