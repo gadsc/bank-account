@@ -6,7 +6,7 @@ object AccountValidations {
     fun accountAlreadyInitializedValidation(account: Account?) =
             OperationValidation.hasViolation({ account != null }, AccountAlreadyInitializedViolation())
 
-    fun insufficientLimitViolation(account: Account, transaction: Transaction): OperationViolation? =
+    fun insufficientLimitValidation(account: Account, transaction: Transaction): OperationViolation? =
             OperationValidation.hasViolation({ account.availableLimit < transaction.amount }, InsufficientLimitViolation())
 
     fun readyForTransaction(account: Account?) =

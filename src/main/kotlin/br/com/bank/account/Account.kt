@@ -1,6 +1,6 @@
 package br.com.bank.account
 
-import br.com.bank.account.AccountValidations.insufficientLimitViolation
+import br.com.bank.account.AccountValidations.insufficientLimitValidation
 import br.com.bank.account.TransactionValidations.intervalValidations
 
 data class Account(
@@ -24,7 +24,7 @@ data class Account(
             }
 
     private fun getViolations(transaction: Transaction) =
-            listOfNotNull(insufficientLimitViolation(this, transaction)) + intervalValidations(transactions, transaction)
+            listOfNotNull(insufficientLimitValidation(this, transaction)) + intervalValidations(transactions, transaction)
 
     private fun executeTransaction(transaction: Transaction) = this.copy(
             availableLimit = this.availableLimit - transaction.amount,
