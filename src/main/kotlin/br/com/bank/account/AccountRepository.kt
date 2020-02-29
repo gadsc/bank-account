@@ -12,14 +12,14 @@ object AccountRepository {
 //        OperationResult(createdAccount!!, listOf(AccountAlreadyInitializedViolation()))
 //    }
 
-    fun createAccount2(account: Account): OperationResult = OperationValidations.CREATE_ACCOUNT.mapNotNull { it.violationFor(createdAccount) }
+    fun createAccount2(account: Account): OperationResult = Account.accountAlreadyInitializedValidation(createdAccount)
             .let {
-                if (it.isEmpty()) {
+                if (it == null) {
                     createdAccount = account
                     OperationResult(createdAccount!!, emptyList())
                 } else OperationResult(
                         account = account,
-                        violations = it
+                        violations = listOfNotNull(it)
                 )
             }
 

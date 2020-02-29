@@ -14,27 +14,14 @@ data class Transaction(val merchant: String, val amount: Long, val time: ZonedDa
         )
     }
 
-    fun commit(account: Account?): OperationResult = when {
-        account == null -> OperationResult(
-                account = null,
-                violations = listOf(AccountNotInitializedViolation())
-        )
-        !account.activeCard -> OperationResult(
-                account = account,
-                violations = listOf(CardNotActiveViolation())
-        )
-        else -> account.commitTransaction(transaction = this)
-    }
-
-    fun commit2(account: Account?): OperationResult {
-        val violations = OperationValidations.TRANSACTION_INPUT.mapNotNull { it.violationFor(account) }
-
-        return violations.let {
-            if (it.isEmpty()) account!!.commitTransaction(transaction = this@Transaction) else OperationResult(
-                    account = account,
-                    violations = it
-            )
-        }
-    }
+    fun commit2(account: Account?): OperationResult =
+            Account.readyForTransaction(account).let {
+                if (it == null) {
+                    account!!.commitTransaction(transaction = this@Transaction)
+                } else OperationResult(
+                        account = account,
+                        violations = listOfNotNull(it)
+                )
+            }
 
 }
