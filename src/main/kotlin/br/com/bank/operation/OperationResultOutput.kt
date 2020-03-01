@@ -1,5 +1,6 @@
-package br.com.bank.account
+package br.com.bank.operation
 
+import br.com.bank.operation.account.Account
 import com.fasterxml.jackson.annotation.JsonInclude
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

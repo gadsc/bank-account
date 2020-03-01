@@ -3,6 +3,12 @@
  */
 package br.com.bank.account
 
+import br.com.bank.consumer.DataConsumer
+import br.com.bank.consumer.OperationConsumer
+import br.com.bank.consumer.stdin.StdInDataConsumer
+import br.com.bank.consumer.stdin.StdInReader
+import br.com.bank.operation.OperationEventConverter
+import br.com.bank.operation.OperationResultOutput
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature

@@ -1,6 +1,10 @@
-package br.com.bank.account
+package br.com.bank.operation.transaction
 
-import br.com.bank.account.AccountValidations.readyForTransaction
+import br.com.bank.operation.account.AccountValidations.readyForTransaction
+import br.com.bank.operation.Operation
+import br.com.bank.operation.OperationIdentifier
+import br.com.bank.operation.OperationResult
+import br.com.bank.operation.account.Account
 import java.time.ZonedDateTime
 
 data class Transaction(val merchant: String, val amount: Long, val time: ZonedDateTime) : Operation {

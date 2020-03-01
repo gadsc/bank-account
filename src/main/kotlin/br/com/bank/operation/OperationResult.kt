@@ -1,5 +1,6 @@
-package br.com.bank.account
+package br.com.bank.operation
 
+import br.com.bank.operation.account.Account
 import violation.OperationViolation
 
 data class OperationResult(val account: Account?, val violations: List<OperationViolation>) {

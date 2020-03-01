@@ -1,4 +1,4 @@
-package br.com.bank.account
+package br.com.bank.operation
 
 enum class OperationIdentifier(val identifier: String) {
     ACCOUNT("account"),

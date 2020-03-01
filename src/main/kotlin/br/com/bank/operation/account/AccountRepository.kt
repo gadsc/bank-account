@@ -1,6 +1,7 @@
-package br.com.bank.account
+package br.com.bank.operation.account
 
-import br.com.bank.account.AccountValidations.accountAlreadyInitializedValidation
+import br.com.bank.operation.account.AccountValidations.accountAlreadyInitializedValidation
+import br.com.bank.operation.OperationResult
 
 object AccountRepository {
     var createdAccount: Account? = null

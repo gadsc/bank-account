@@ -1,4 +1,4 @@
-package br.com.bank.account
+package br.com.bank.operation
 
 interface OperationEvent {
     fun toOperation(): Operation

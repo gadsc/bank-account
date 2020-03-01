@@ -1,5 +1,8 @@
-package br.com.bank.account
+package br.com.bank.operation.transaction
 
+import br.com.bank.operation.Operation
+import br.com.bank.operation.OperationEvent
+import br.com.bank.operation.transaction.Transaction
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonRootName

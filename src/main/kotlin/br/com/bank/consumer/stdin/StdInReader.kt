@@ -1,4 +1,6 @@
-package br.com.bank.account
+package br.com.bank.consumer.stdin
+
+import br.com.bank.consumer.Reader
 
 class StdInReader: Reader {
     override tailrec fun recursiveRead(events: List<String>, exitCode: String): List<String> {
@@ -10,8 +12,4 @@ class StdInReader: Reader {
             recursiveRead(events = events + line, exitCode = exitCode)
         }
     }
-}
-
-interface Reader {
-    fun recursiveRead(events: List<String> = emptyList(), exitCode: String = ""): List<String>
 }

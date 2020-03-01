@@ -1,5 +1,6 @@
-package br.com.bank.account
+package br.com.bank.operation.account
 
+import br.com.bank.operation.transaction.Transaction
 import violation.*
 
 object AccountValidations {
@@ -10,7 +11,8 @@ object AccountValidations {
             OperationValidation.hasViolation({ account.availableLimit < transaction.amount }, InsufficientLimitViolation())
 
     fun readyForTransaction(account: Account?) =
-            accountNotInitializedValidation(account = account) ?: cardNotActiveValidation(account = account)
+            accountNotInitializedValidation(account = account)
+                    ?: cardNotActiveValidation(account = account)
 
     private fun accountNotInitializedValidation(account: Account?) =
             OperationValidation.hasViolation({ account == null }, AccountNotInitializedViolation())
