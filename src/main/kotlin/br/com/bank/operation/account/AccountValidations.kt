@@ -1,7 +1,8 @@
 package br.com.bank.operation.account
 
 import br.com.bank.operation.account.transaction.Transaction
-import br.com.bank.violation.*
+import br.com.bank.operation.validation.OperationValidation
+import br.com.bank.operation.validation.violation.*
 
 object AccountValidations {
     fun accountAlreadyInitializedValidation(account: Account?) =

@@ -7,7 +7,7 @@ import br.com.bank.operation.account.transaction.TransactionOperationEvent
 import br.com.bank.operation.account.transaction.TransactionOperationProcessor
 
 object OperationProcessorFactory {
-    fun resolve(it: OperationEvent): OperationProcessor = when (it) {
+    fun resolve(operationEvent: OperationEvent): OperationProcessor = when (operationEvent) {
         is AccountOperationEvent -> AccountOperationProcessor()
         is TransactionOperationEvent -> TransactionOperationProcessor()
         else -> throw RuntimeException("Not expected message")

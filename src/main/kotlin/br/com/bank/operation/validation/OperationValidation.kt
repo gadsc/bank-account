@@ -1,4 +1,6 @@
-package br.com.bank.violation
+package br.com.bank.operation.validation
+
+import br.com.bank.operation.validation.violation.OperationViolation
 
 object OperationValidation {
     fun hasViolation(violated: () -> Boolean, violation: OperationViolation): OperationViolation? =

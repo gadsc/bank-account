@@ -1,4 +1,4 @@
-package br.com.bank.violation
+package br.com.bank.operation.validation.violation
 
 class CardNotActiveViolation(
         override val reason: String = "card-not-active",

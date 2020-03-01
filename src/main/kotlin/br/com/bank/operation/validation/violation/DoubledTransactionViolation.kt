@@ -1,4 +1,4 @@
-package br.com.bank.violation
+package br.com.bank.operation.validation.violation
 
 class DoubledTransactionViolation(
         override val reason: String = "doubled-transaction",

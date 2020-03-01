@@ -1,4 +1,4 @@
-package br.com.bank.violation
+package br.com.bank.operation.validation.violation
 
 class AccountNotInitializedViolation(
         override val reason: String = "account-not-initialized",
