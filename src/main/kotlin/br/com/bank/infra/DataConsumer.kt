@@ -1,4 +1,4 @@
-package br.com.bank.consumer
+package br.com.bank.infra
 
 import br.com.bank.operation.OperationResult
 

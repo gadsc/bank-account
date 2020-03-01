@@ -1,4 +1,4 @@
-package br.com.bank.consumer.stdin
+package br.com.bank.operation.consumer.stdin
 
 import org.junit.Assert.*
 

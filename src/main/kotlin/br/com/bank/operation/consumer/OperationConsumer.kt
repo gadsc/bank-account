@@ -1,5 +1,6 @@
-package br.com.bank.consumer
+package br.com.bank.operation.consumer
 
+import br.com.bank.infra.Reader
 import br.com.bank.operation.OperationEvent
 import br.com.bank.operation.OperationEventConverter
 

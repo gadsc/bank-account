@@ -1,4 +1,4 @@
-package br.com.bank.processor
+package br.com.bank.operation.processor
 
 import br.com.bank.operation.OperationEvent
 import br.com.bank.operation.account.AccountOperationEvent

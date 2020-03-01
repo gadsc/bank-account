@@ -1,6 +1,6 @@
-package br.com.bank.consumer.stdin
+package br.com.bank.operation.consumer.stdin
 
-import br.com.bank.consumer.Reader
+import br.com.bank.infra.Reader
 
 class StdInReader: Reader {
     override tailrec fun recursiveRead(events: List<String>, exitCode: String): List<String> {
