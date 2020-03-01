@@ -1,7 +1,7 @@
 package br.com.bank.operation
 
 import br.com.bank.operation.account.AccountOperationEvent
-import br.com.bank.operation.transaction.TransactionOperationEvent
+import br.com.bank.operation.account.transaction.TransactionOperationEvent
 import com.fasterxml.jackson.databind.ObjectMapper
 
 class OperationEventConverter(

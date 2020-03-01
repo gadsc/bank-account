@@ -1,8 +1,8 @@
 package br.com.bank.operation.account
 
 import br.com.bank.operation.account.AccountValidations.insufficientLimitValidation
-import br.com.bank.operation.transaction.Transaction
-import br.com.bank.operation.transaction.TransactionValidations.intervalValidations
+import br.com.bank.operation.account.transaction.Transaction
+import br.com.bank.operation.account.transaction.TransactionValidations.intervalValidations
 import br.com.bank.operation.Operation
 import br.com.bank.operation.OperationIdentifier
 import br.com.bank.operation.OperationResult

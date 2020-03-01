@@ -1,4 +1,4 @@
-package br.com.bank.operation.transaction
+package br.com.bank.operation.account.transaction
 
 import br.com.bank.violation.DoubledTransactionViolation
 import br.com.bank.violation.HighFrequencyViolation

@@ -1,9 +1,8 @@
-package br.com.bank.operation.transaction
+package br.com.bank.operation.account.transaction
 
 import br.com.bank.operation.account.AccountRepository.createdAccount
 import br.com.bank.operation.Operation
 import br.com.bank.operation.OperationResult
-import br.com.bank.operation.transaction.Transaction
 import br.com.bank.processor.OperationProcessor
 
 class TransactionOperationProcessor : OperationProcessor {

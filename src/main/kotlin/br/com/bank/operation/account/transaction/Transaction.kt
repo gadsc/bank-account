@@ -1,4 +1,4 @@
-package br.com.bank.operation.transaction
+package br.com.bank.operation.account.transaction
 
 import br.com.bank.operation.account.AccountValidations.readyForTransaction
 import br.com.bank.operation.Operation

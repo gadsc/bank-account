@@ -1,6 +1,6 @@
 package br.com.bank.operation.account
 
-import br.com.bank.operation.transaction.Transaction
+import br.com.bank.operation.account.transaction.Transaction
 import br.com.bank.violation.*
 
 object AccountValidations {
