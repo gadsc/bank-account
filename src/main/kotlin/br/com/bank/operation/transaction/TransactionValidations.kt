@@ -1,9 +1,9 @@
 package br.com.bank.operation.transaction
 
-import violation.DoubledTransactionViolation
-import violation.HighFrequencyViolation
-import violation.OperationValidation
-import violation.OperationViolation
+import br.com.bank.violation.DoubledTransactionViolation
+import br.com.bank.violation.HighFrequencyViolation
+import br.com.bank.violation.OperationValidation
+import br.com.bank.violation.OperationViolation
 
 object TransactionValidations {
     fun intervalValidations(transactions: List<Transaction>, transaction: Transaction): List<OperationViolation> =

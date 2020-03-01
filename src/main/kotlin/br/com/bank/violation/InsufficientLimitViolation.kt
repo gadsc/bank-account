@@ -1,4 +1,4 @@
-package violation
+package br.com.bank.violation
 
 class InsufficientLimitViolation(
         override val reason: String = "insufficient-limit",

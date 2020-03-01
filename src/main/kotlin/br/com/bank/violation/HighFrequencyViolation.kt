@@ -1,4 +1,4 @@
-package violation
+package br.com.bank.violation
 
 class HighFrequencyViolation(
         override val reason: String = "high-frequency-small-interval",

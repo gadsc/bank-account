@@ -36,7 +36,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = "br.com.bank.account.AppKt"
+    mainClassName = "br.com.bank.BankApplicationKt"
 }
 
 val run by tasks.getting(JavaExec::class) {
@@ -50,6 +50,6 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
 
 
     manifest {
-        attributes(mapOf("Main-Class" to "br.com.bank.account.AppKt"))
+        attributes(mapOf("Main-Class" to "br.com.bank.BankApplicationKt"))
     }
 }
