@@ -90,8 +90,6 @@ class AccountTest {
 
         val result = subject.commitTransaction(transaction = transaction2)
 
-        println(result.violations)
-
         assertEquals(subject.activeCard, result.account!!.activeCard)
         assertEquals(subject.availableLimit, result.account!!.availableLimit)
         assertTrue(result.violations.isNotEmpty())
