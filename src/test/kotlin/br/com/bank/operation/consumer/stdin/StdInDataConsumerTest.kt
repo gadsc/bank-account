@@ -1,19 +1,18 @@
 package br.com.bank.operation.consumer.stdin
 
-import br.com.bank.operation.account.AccountOperationEvent
-import br.com.bank.operation.account.transaction.TransactionOperationEvent
 import br.com.bank.operation.consumer.OperationConsumer
+import br.com.bank.operation.objectMother.AccountOperationEventObjectMother
+import br.com.bank.operation.objectMother.TransactionOperationEventObjectMother
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import java.time.ZonedDateTime
 
 class StdInDataConsumerTest {
     private lateinit var subject: StdInDataConsumer
-    private val accountEvent = AccountOperationEvent(true, 100)
-    private val transactionEvent = TransactionOperationEvent("Burguer King", 20, ZonedDateTime.parse("2019-02-13T11:00:00.000Z[UTC]"))
+    private val accountEvent = AccountOperationEventObjectMother.build()
+    private val transactionEvent = TransactionOperationEventObjectMother.build()
 
     @Before
     fun init() {
