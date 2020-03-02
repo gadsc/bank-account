@@ -2,9 +2,15 @@ package br.com.bank.operation.account
 
 import br.com.bank.operation.validation.violation.AccountAlreadyInitializedViolation
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 
 class AccountRepositoryTest {
+
+    @Before
+    fun init() {
+        AccountRepository.clearActiveAccount()
+    }
 
     @Test
     fun `should create account when process the operation`() {
