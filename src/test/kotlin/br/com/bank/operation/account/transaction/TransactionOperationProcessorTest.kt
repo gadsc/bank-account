@@ -1,14 +1,14 @@
 package br.com.bank.operation.account.transaction
 
-import br.com.bank.operation.account.Account
 import br.com.bank.operation.account.AccountRepository
+import br.com.bank.operation.objectMother.AccountObjectMother
+import br.com.bank.operation.objectMother.TransactionObjectMother
 import br.com.bank.operation.validation.violation.AccountNotInitializedViolation
 import br.com.bank.operation.validation.violation.CardNotActiveViolation
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import java.time.ZonedDateTime
 
 class TransactionOperationProcessorTest {
     private lateinit var subject: TransactionOperationProcessor
@@ -21,10 +21,9 @@ class TransactionOperationProcessorTest {
 
     @Test
     fun `should commit transaction when account is ready`() {
-        val now = ZonedDateTime.now()
-        val account = Account(activeCard = true, availableLimit = 100)
+        val account = AccountObjectMother.build()
         AccountRepository.createAccount(account)
-        val transaction = Transaction("Burguer King", 20, time = now)
+        val transaction = TransactionObjectMother.build()
 
         val result = subject.process(transaction)
 
@@ -36,8 +35,7 @@ class TransactionOperationProcessorTest {
 
     @Test
     fun `should not commit transaction when account is not initialized`() {
-        val now = ZonedDateTime.now()
-        val transaction = Transaction("Burguer King", 20, time = now)
+        val transaction = TransactionObjectMother.build()
 
         val result = subject.process(transaction)
 
@@ -47,10 +45,9 @@ class TransactionOperationProcessorTest {
 
     @Test
     fun `should not commit transaction when account has not active card`() {
-        val now = ZonedDateTime.now()
-        val account = Account(activeCard = false, availableLimit = 100)
+        val account = AccountObjectMother.build(activeCard = false)
         AccountRepository.createAccount(account)
-        val transaction = Transaction("Burguer King", 20, time = now)
+        val transaction = TransactionObjectMother.build()
 
         val result = subject.process(transaction)
 

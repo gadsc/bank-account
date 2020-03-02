@@ -1,17 +1,16 @@
 package br.com.bank.operation.account.transaction
 
+import br.com.bank.operation.objectMother.TransactionObjectMother
 import br.com.bank.operation.validation.violation.DoubledTransactionViolation
 import br.com.bank.operation.validation.violation.HighFrequencyViolation
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.time.ZonedDateTime
 
 class TransactionValidationsTest {
     @Test
     fun `should return empty list of violations when none violation in a small interval was found`() {
-        val now = ZonedDateTime.now()
-        val transaction = Transaction("Burguer King", 20, time = now)
+        val transaction = TransactionObjectMother.build()
         val result = TransactionValidations.intervalValidations(emptyList(), transaction)
 
         assertTrue(result.isEmpty())
@@ -19,8 +18,7 @@ class TransactionValidationsTest {
 
     @Test
     fun `should return DoubledTransactionViolation when doubled transaction in a small interval`() {
-        val now = ZonedDateTime.now()
-        val transaction = Transaction("Burguer King", 20, time = now)
+        val transaction = TransactionObjectMother.build()
         val result = TransactionValidations.intervalValidations(listOf(transaction), transaction)
 
         assertEquals(1, result.size)
@@ -29,12 +27,10 @@ class TransactionValidationsTest {
 
     @Test
     fun `should return HighFrequencyViolation when high frequency transactions in a small interval`() {
-        val now = ZonedDateTime.now()
-        val transaction = Transaction("Burguer King", 20, time = now)
-        val transaction2 = Transaction("Burguer King2", 20, time = now)
-        val transaction3 = Transaction("Burguer King3", 20, time = now)
+        val transaction = TransactionObjectMother.build()
+        val transactions = TransactionObjectMother.buildMany(amountOfTransactions = 2)
 
-        val result = TransactionValidations.intervalValidations( listOf(transaction, transaction2), transaction3)
+        val result = TransactionValidations.intervalValidations( transactions, transaction)
 
         assertEquals(1, result.size)
         assertEquals(HighFrequencyViolation, result.first())
@@ -42,9 +38,8 @@ class TransactionValidationsTest {
 
     @Test
     fun `should return small interval violations`() {
-        val now = ZonedDateTime.now()
-        val transaction = Transaction("Burguer King", 20, time = now)
-        val transaction2 = Transaction("Burguer King2", 20, time = now)
+        val transaction = TransactionObjectMother.build()
+        val transaction2 = TransactionObjectMother.build("Burguer King2")
 
         val result = TransactionValidations.intervalValidations( listOf(transaction, transaction2), transaction2)
 

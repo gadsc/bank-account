@@ -1,13 +1,11 @@
 package br.com.bank.operation.consumer.stdin
 
-import br.com.bank.operation.OperationResult
-import br.com.bank.operation.account.Account
 import br.com.bank.operation.account.AccountOperationEvent
 import br.com.bank.operation.account.transaction.TransactionOperationEvent
 import br.com.bank.operation.consumer.OperationConsumer
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import java.time.ZonedDateTime
@@ -31,7 +29,7 @@ class StdInDataConsumerTest {
     @Test
     fun `should return executed operations`() {
         val results = subject.batchProcessing()
-        
+
         assertEquals(2, results.size)
         assertEquals(accountEvent.activeCard, results[0].account?.activeCard)
         assertEquals(accountEvent.availableLimit, results[0].account?.availableLimit)
