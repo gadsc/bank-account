@@ -1,6 +1,6 @@
 package br.com.bank.operation
 
-import br.com.bank.operation.account.Account
+import br.com.bank.operation.account.AccountResultOutput
 import com.fasterxml.jackson.annotation.JsonInclude
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -12,16 +12,6 @@ data class OperationResultOutput(val account: AccountResultOutput?, val violatio
                     else -> null
                 },
                 violations = operationResult.violations.map { it.reason }
-        )
-    }
-}
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-data class AccountResultOutput(val activeCard: Boolean?, val availableLimit: Long?) {
-    companion object {
-        fun from(account: Account): AccountResultOutput = AccountResultOutput(
-                activeCard = account.activeCard,
-                availableLimit = account.availableLimit
         )
     }
 }

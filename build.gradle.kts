@@ -17,6 +17,7 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation("org.assertj:assertj-core:3.15.0")
     testImplementation("io.mockk:mockk:1.9.1")
 }
 

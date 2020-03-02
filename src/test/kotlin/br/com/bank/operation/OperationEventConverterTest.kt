@@ -3,6 +3,7 @@ package br.com.bank.operation
 import br.com.bank.infra.CustomObjectMapper
 import br.com.bank.operation.account.AccountOperationEvent
 import br.com.bank.operation.account.transaction.TransactionOperationEvent
+import org.assertj.core.api.Assertions
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -47,5 +48,14 @@ class OperationEventConverterTest {
         assertEquals(ZonedDateTime.parse("2019-02-12T11:00:00.000Z[UTC]"), operationEvent[1].time)
         assertEquals(ZonedDateTime.parse("2019-02-13T11:00:00.000Z[UTC]"), operationEvent[2].time)
         assertEquals(ZonedDateTime.parse("2019-02-14T11:00:00.000Z[UTC]"), operationEvent[3].time)
+    }
+
+    @Test
+    fun `should throw NotImplementedError for not mapped event`() {
+        val notMappedEvent = "{\"new-event\": {\"new-field\": \"New Value\" }}"
+
+        Assertions.assertThatExceptionOfType(NotImplementedError::class.java)
+                .isThrownBy { operationEventConverter.convertEvents(listOf(notMappedEvent)) }
+                .withMessage("Event not mapped yet")
     }
 }
