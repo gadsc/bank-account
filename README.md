@@ -1,7 +1,9 @@
 # Bank-Account
 
 ### Purpose
-- 
+- Account creation just once.
+- Transaction authorization for the created account.
+- Error handling transforming to violations any violation of expected business rule.
 
 ### Technologies
 - Kotlin
@@ -9,7 +11,7 @@
 - Docker
 
 ### Project Organization
-- We decided to use the `Package by Feature approach` to organize the packages to have more cohesion and high modularity, and with minimal coupling between packages. If you want to read more about package by feature [click here](http://www.javapractices.com/topic/TopicAction.do?Id=205)
+- We decided to use the `Package by Feature approach` to present the project by the problem that he solves and not by the way that will be provided to the user and organize the packages to have more cohesion and high modularity, and with minimal coupling between packages. If you want to read more about package by feature [click here](http://www.javapractices.com/topic/TopicAction.do?Id=205)
 
 ### Dependencies
 - [Jackson](https://github.com/FasterXML/jackson-module-kotlin) to transform Json Strings to Objects
