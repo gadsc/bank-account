@@ -7,10 +7,8 @@ WORKDIR /app
 ADD build.gradle.kts /app
 ADD settings.gradle.kts /app
 
-RUN gradle dependencies
-
 COPY . /app
-RUN gradle build -x test
+RUN gradle clean test build
 
 FROM openjdk:13-slim-buster
 

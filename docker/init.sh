@@ -2,4 +2,4 @@
 
 set -e
 
-java ${JVM} -Duser.Timezone=America/Sao_Paulo -jar bank-account.jar
+java ${JVM} -Duser.Timezone=GMT -jar bank-account.jar

@@ -12,6 +12,7 @@ class AccountOperationProcessorTest {
 
     @Before
     fun init() {
+        AccountRepository.clearActiveAccount()
         subject = AccountOperationProcessor()
     }
 
