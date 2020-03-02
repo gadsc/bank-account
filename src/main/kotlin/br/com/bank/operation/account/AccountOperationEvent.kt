@@ -2,7 +2,6 @@ package br.com.bank.operation.account
 
 import br.com.bank.operation.Operation
 import br.com.bank.operation.OperationEvent
-import br.com.bank.operation.account.Account
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonRootName
 

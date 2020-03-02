@@ -9,7 +9,6 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 object CustomObjectMapper {
     val mapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule())
             .registerModule(JavaTimeModule())
-//                .enable(SerializationFeature.WRAP_ROOT_VALUE)
             .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 }
