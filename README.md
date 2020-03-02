@@ -30,3 +30,4 @@ Main decisions
 - Como a execução é sequenciada optei por nenhuma abordagem multi-thread mas poderia ser implementado algo com [corroutines](https://proandroiddev.com/synchronization-and-thread-safety-techniques-in-java-and-kotlin-f63506370e6d) ou [workers](https://kotlinlang.org/docs/reference/native/concurrency.html#workers)
 
 # Coverage
+![Coverage-Report](./docs/coverage-report.png)
