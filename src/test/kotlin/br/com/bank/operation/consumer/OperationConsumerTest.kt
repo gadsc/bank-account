@@ -1,5 +1,6 @@
 package br.com.bank.operation.consumer
 
+import br.com.bank.infra.CustomObjectMapper
 import br.com.bank.infra.Reader
 import br.com.bank.operation.OperationEventConverter
 import br.com.bank.operation.account.AccountOperationEvent
@@ -28,12 +29,7 @@ class OperationConsumerTest {
 
         every { reader.recursiveRead(any()) } returns events
 
-        val mapper = ObjectMapper().registerModule(KotlinModule())
-                .registerModule(JavaTimeModule())
-                .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-
-        val operationEventConverter = OperationEventConverter(mapper)
+        val operationEventConverter = OperationEventConverter(CustomObjectMapper.mapper)
         subject = OperationConsumer(operationEventConverter = operationEventConverter, reader = reader)
     }
 

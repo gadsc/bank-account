@@ -1,15 +1,9 @@
 package br.com.bank.operation
 
-import br.com.bank.operation.account.Account
+import br.com.bank.infra.CustomObjectMapper
 import br.com.bank.operation.account.AccountOperationEvent
-import br.com.bank.operation.account.transaction.Transaction
 import br.com.bank.operation.account.transaction.TransactionOperationEvent
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import java.time.ZonedDateTime
@@ -19,12 +13,7 @@ class OperationEventConverterTest {
 
     @Before
     fun init() {
-        val mapper = ObjectMapper().registerModule(KotlinModule())
-                .registerModule(JavaTimeModule())
-                .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-
-        operationEventConverter = OperationEventConverter(mapper)
+        operationEventConverter = OperationEventConverter(CustomObjectMapper.mapper)
     }
 
     @Test

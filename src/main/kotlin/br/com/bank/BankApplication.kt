@@ -3,6 +3,7 @@
  */
 package br.com.bank
 
+import br.com.bank.infra.CustomObjectMapper
 import br.com.bank.infra.DataConsumer
 import br.com.bank.operation.consumer.OperationConsumer
 import br.com.bank.operation.consumer.stdin.StdInDataConsumer
@@ -24,17 +25,10 @@ class App {
 
 fun main(args: Array<String>) {
     println(App().greeting)
-    val mapper = getCustomJacksonMapper()
+    val mapper = CustomObjectMapper.mapper
     val operationConsumer =
             OperationConsumer(operationEventConverter = OperationEventConverter(mapper), reader = StdInReader())
     val dataConsumer: DataConsumer = StdInDataConsumer(operationConsumer = operationConsumer)
 
     dataConsumer.batchProcessing().forEach { println(mapper.writeValueAsString(OperationResultOutput.from(it))) }
 }
-
-private fun getCustomJacksonMapper(): ObjectMapper =
-        ObjectMapper().registerModule(KotlinModule())
-                .registerModule(JavaTimeModule())
-//                .enable(SerializationFeature.WRAP_ROOT_VALUE)
-                .enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
