@@ -30,7 +30,9 @@ data class Account(
             }
 
     private fun getViolations(transaction: Transaction) =
-            listOfNotNull(insufficientLimitValidation(this, transaction)) + intervalValidations(transactions, transaction)
+            listOfNotNull(
+                    insufficientLimitValidation(account = this, transaction = transaction)) +
+                    intervalValidations(transactions = transactions, transaction = transaction)
 
     private fun executeTransaction(transaction: Transaction) = this.copy(
             availableLimit = this.availableLimit - transaction.amount,
