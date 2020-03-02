@@ -28,3 +28,5 @@ Main decisions
 - Ordenação dos eventos de transação pelo campo `time`
 - Retorno dos eventos na ordem que foram executados (diferente da entrada)
 - Como a execução é sequenciada optei por nenhuma abordagem multi-thread mas poderia ser implementado algo com [corroutines](https://proandroiddev.com/synchronization-and-thread-safety-techniques-in-java-and-kotlin-f63506370e6d) ou [workers](https://kotlinlang.org/docs/reference/native/concurrency.html#workers)
+
+# Coverage
