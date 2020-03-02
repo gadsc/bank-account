@@ -1,5 +1,8 @@
 package br.com.bank.operation.consumer.stdin
 
+import br.com.bank.infra.CustomObjectMapper
+import br.com.bank.infra.Reader
+import br.com.bank.operation.OperationEventConverter
 import br.com.bank.operation.consumer.OperationConsumer
 import br.com.bank.operation.objectMother.AccountOperationEventObjectMother
 import br.com.bank.operation.objectMother.TransactionOperationEventObjectMother
@@ -16,11 +19,18 @@ class StdInDataConsumerTest {
 
     @Before
     fun init() {
-        val events = listOf(accountEvent, transactionEvent)
+        val accountJson = "{\"account\": {\"active-card\": true, \"available-limit\": 100} }"
+        val transactionJson = "{\"transaction\": {\"merchant\": \"Burguer King\", \"amount\": 20, \"time\": \"2019-02-13T11:00:00.000Z\" }}"
 
-        val operationConsumer: OperationConsumer = mockk(relaxed = true)
+        val events = listOf(accountJson, transactionJson)
+        val reader: Reader = mockk(relaxed = true)
+        val operationEventConverter = OperationEventConverter(mapper = CustomObjectMapper.mapper)
+        val operationConsumer = OperationConsumer(
+                operationEventConverter = operationEventConverter,
+                reader = reader
+        )
 
-        every { operationConsumer.consume() } returns events
+        every { reader.recursiveRead(any()) } returns events
 
         subject = StdInDataConsumer(operationConsumer)
     }
