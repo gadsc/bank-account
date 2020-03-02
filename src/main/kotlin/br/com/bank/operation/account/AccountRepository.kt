@@ -15,6 +15,10 @@ object AccountRepository {
                 }
             }
 
+    fun clearActiveAccount() {
+        createdAccount = null
+    }
+
     fun updateActiveAccount(account: Account): OperationResult {
         createdAccount = account
         return OperationResult(account = createdAccount, violations = emptyList())
