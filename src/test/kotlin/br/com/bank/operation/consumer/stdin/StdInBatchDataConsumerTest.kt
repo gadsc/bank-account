@@ -12,8 +12,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class StdInDataConsumerTest {
-    private lateinit var subject: StdInDataConsumer
+class StdInBatchDataConsumerTest {
+    private lateinit var subject: StdInBatchDataConsumer
     private val accountEvent = AccountOperationEventObjectMother.build()
     private val transactionEvent = TransactionOperationEventObjectMother.build()
 
@@ -32,12 +32,12 @@ class StdInDataConsumerTest {
 
         every { reader.recursiveRead(any()) } returns events
 
-        subject = StdInDataConsumer(operationConsumer)
+        subject = StdInBatchDataConsumer(operationConsumer)
     }
 
     @Test
     fun `should return executed operations`() {
-        val results = subject.batchProcessing()
+        val results = subject.process()
 
         assertEquals(2, results.size)
         assertEquals(accountEvent.activeCard, results[0].account?.activeCard)
