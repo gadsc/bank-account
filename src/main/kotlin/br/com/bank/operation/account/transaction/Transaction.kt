@@ -1,10 +1,10 @@
 package br.com.bank.operation.account.transaction
 
-import br.com.bank.operation.account.AccountValidations.readyForTransaction
 import br.com.bank.operation.Operation
 import br.com.bank.operation.OperationIdentifier
 import br.com.bank.operation.OperationResult
 import br.com.bank.operation.account.Account
+import br.com.bank.operation.account.AccountValidations.readyForTransaction
 import java.time.ZonedDateTime
 
 data class Transaction(val merchant: String, val amount: Long, val time: ZonedDateTime) : Operation {
@@ -22,5 +22,4 @@ data class Transaction(val merchant: String, val amount: Long, val time: ZonedDa
         operationViolation?.let { it -> OperationResult(account, it) }
                 ?: account!!.commitTransaction(transaction = this@Transaction)
     }
-
 }

@@ -3,5 +3,5 @@ package br.com.bank.infra
 import br.com.bank.operation.OperationResult
 
 interface DataConsumer {
-    fun batchProcessing(): List<OperationResult>
+    fun process(): List<OperationResult>
 }
