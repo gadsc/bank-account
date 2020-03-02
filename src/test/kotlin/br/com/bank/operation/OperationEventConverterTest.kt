@@ -34,4 +34,18 @@ class OperationEventConverterTest {
         assertEquals(20, operationEvent.amount)
         assertEquals(ZonedDateTime.parse("2019-02-13T11:00:00.000Z[UTC]"), operationEvent.time)
     }
+
+    @Test
+    fun `should return TransactionOperationEvents ordered by time`() {
+        val thirdTransaction = "{\"transaction\": {\"merchant\": \"Burguer King\", \"amount\": 20, \"time\": \"2019-02-13T11:00:00.000Z\" }}"
+        val secondTransaction = "{\"transaction\": {\"merchant\": \"Burguer King\", \"amount\": 20, \"time\": \"2019-02-12T11:00:00.000Z\" }}"
+        val firstTransaction = "{\"transaction\": {\"merchant\": \"Burguer King\", \"amount\": 20, \"time\": \"2019-02-11T11:00:00.000Z\" }}"
+        val fourthTransaction = "{\"transaction\": {\"merchant\": \"Burguer King\", \"amount\": 20, \"time\": \"2019-02-14T11:00:00.000Z\" }}"
+        val operationEvent = operationEventConverter.convertEvents(listOf(thirdTransaction, secondTransaction, firstTransaction, fourthTransaction)).map { it as TransactionOperationEvent }
+
+        assertEquals(ZonedDateTime.parse("2019-02-11T11:00:00.000Z[UTC]"), operationEvent[0].time)
+        assertEquals(ZonedDateTime.parse("2019-02-12T11:00:00.000Z[UTC]"), operationEvent[1].time)
+        assertEquals(ZonedDateTime.parse("2019-02-13T11:00:00.000Z[UTC]"), operationEvent[2].time)
+        assertEquals(ZonedDateTime.parse("2019-02-14T11:00:00.000Z[UTC]"), operationEvent[3].time)
+    }
 }

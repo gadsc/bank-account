@@ -18,8 +18,7 @@ class OperationEventConverter(
     fun convertEvents(events: List<String>): List<OperationEvent> = mapEvents(events).let {
         accounts.flatMap { it.value } + transactions.flatMap { it.value.sortedBy { transaction -> transaction.time } }
     }
-
-
+    
     private fun mapEvents(events: List<String>) {
         events.forEach { event ->
             when {
