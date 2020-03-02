@@ -24,7 +24,7 @@ class TransactionValidationsTest {
         val result = TransactionValidations.intervalValidations(listOf(transaction), transaction)
 
         assertEquals(1, result.size)
-        assertEquals(DoubledTransactionViolation().reason, result.first().reason)
+        assertEquals(DoubledTransactionViolation, result.first())
     }
 
     @Test
@@ -37,7 +37,7 @@ class TransactionValidationsTest {
         val result = TransactionValidations.intervalValidations( listOf(transaction, transaction2), transaction3)
 
         assertEquals(1, result.size)
-        assertEquals(HighFrequencyViolation().reason, result.first().reason)
+        assertEquals(HighFrequencyViolation, result.first())
     }
 
     @Test
@@ -49,6 +49,6 @@ class TransactionValidationsTest {
         val result = TransactionValidations.intervalValidations( listOf(transaction, transaction2), transaction2)
 
         assertEquals(2, result.size)
-        assertTrue(result.map { it.reason }.containsAll(listOf(HighFrequencyViolation().reason, DoubledTransactionViolation().reason)))
+        assertTrue(result.containsAll(listOf(HighFrequencyViolation, DoubledTransactionViolation)))
     }
 }

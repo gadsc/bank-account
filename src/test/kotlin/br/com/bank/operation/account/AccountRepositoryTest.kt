@@ -43,6 +43,6 @@ class AccountRepositoryTest {
         val operationResult = AccountRepository.createAccount(account)
 
         assertTrue(operationResult.violations.isNotEmpty())
-        assertEquals(AccountAlreadyInitializedViolation().reason, operationResult.violations.first().reason)
+        assertEquals(AccountAlreadyInitializedViolation, operationResult.violations.first())
     }
 }

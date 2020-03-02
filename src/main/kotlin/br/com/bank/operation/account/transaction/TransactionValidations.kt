@@ -15,11 +15,11 @@ object TransactionValidations {
                     }
 
     private fun highFrequencyViolation(transactionInterval: List<Transaction>): OperationViolation? =
-            OperationValidation.hasViolation({ transactionInterval.size >= 2 }, HighFrequencyViolation())
+            OperationValidation.hasViolation({ transactionInterval.size >= 2 }, HighFrequencyViolation)
 
     private fun doubleTransactionValidation(transactionInterval: List<Transaction>, transaction: Transaction): OperationViolation? = OperationValidation
             .hasViolation({
                 transactionInterval
                         .any { it.merchant == transaction.merchant && it.amount == transaction.amount }
-            }, DoubledTransactionViolation())
+            }, DoubledTransactionViolation)
 }

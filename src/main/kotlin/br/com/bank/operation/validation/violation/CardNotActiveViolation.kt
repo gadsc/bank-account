@@ -1,6 +1,6 @@
 package br.com.bank.operation.validation.violation
 
-class CardNotActiveViolation(
-        override val reason: String = "card-not-active",
+object CardNotActiveViolation  : OperationViolation() {
+        override val reason: String = "card-not-active"
         override val message: String = "Card not active"
-) : OperationViolation
+}

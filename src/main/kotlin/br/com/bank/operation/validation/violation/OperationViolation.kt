@@ -1,6 +1,6 @@
 package br.com.bank.operation.validation.violation
 
-interface OperationViolation {
-    val reason: String
-    val message: String
+abstract class OperationViolation {
+    abstract val reason: String
+    abstract  val message: String
 }

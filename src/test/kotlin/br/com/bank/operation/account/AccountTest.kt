@@ -47,7 +47,7 @@ class AccountTest {
         assertEquals(subject.availableLimit, result.account!!.availableLimit)
         assertTrue(result.account!!.transactions.isEmpty())
         assertTrue(result.violations.isNotEmpty())
-        assertEquals(InsufficientLimitViolation().reason, result.violations.first().reason)
+        assertEquals(InsufficientLimitViolation, result.violations.first())
     }
 
     @Test
@@ -62,7 +62,7 @@ class AccountTest {
         assertEquals(subject.activeCard, result.account!!.activeCard)
         assertEquals(subject.availableLimit, result.account!!.availableLimit)
         assertTrue(result.violations.isNotEmpty())
-        assertEquals(DoubledTransactionViolation().reason, result.violations.first().reason)
+        assertEquals(DoubledTransactionViolation, result.violations.first())
     }
 
     @Test
@@ -78,7 +78,7 @@ class AccountTest {
         assertEquals(subject.activeCard, result.account!!.activeCard)
         assertEquals(subject.availableLimit, result.account!!.availableLimit)
         assertTrue(result.violations.isNotEmpty())
-        assertEquals(HighFrequencyViolation().reason, result.violations.first().reason)
+        assertEquals(HighFrequencyViolation, result.violations.first())
     }
 
     @Test
@@ -93,7 +93,7 @@ class AccountTest {
         assertEquals(subject.activeCard, result.account!!.activeCard)
         assertEquals(subject.availableLimit, result.account!!.availableLimit)
         assertTrue(result.violations.isNotEmpty())
-        assertTrue(result.violations.map { it.reason }
-                .containsAll(listOf(HighFrequencyViolation().reason, DoubledTransactionViolation().reason, InsufficientLimitViolation().reason)))
+        assertTrue(result.violations
+                .containsAll(listOf(HighFrequencyViolation, DoubledTransactionViolation, InsufficientLimitViolation)))
     }
 }

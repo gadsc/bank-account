@@ -34,6 +34,6 @@ class AccountOperationProcessorTest {
 
 
         assertTrue(operationResult.violations.isNotEmpty())
-        assertEquals(AccountAlreadyInitializedViolation().reason, operationResult.violations.first().reason)
+        assertEquals(AccountAlreadyInitializedViolation, operationResult.violations.first())
     }
 }

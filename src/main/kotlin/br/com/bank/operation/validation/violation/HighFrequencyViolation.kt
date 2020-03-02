@@ -1,6 +1,6 @@
 package br.com.bank.operation.validation.violation
 
-class HighFrequencyViolation(
-        override val reason: String = "high-frequency-small-interval",
+object HighFrequencyViolation : OperationViolation() {
+        override val reason: String = "high-frequency-small-interval"
         override val message: String = "High frequency small interval"
-) : OperationViolation
+}

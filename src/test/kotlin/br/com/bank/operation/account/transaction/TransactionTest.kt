@@ -43,7 +43,7 @@ class TransactionTest {
         val result = subject.commit(account = null)
 
         assertTrue(result.violations.isNotEmpty())
-        assertEquals(AccountNotInitializedViolation().reason, result.violations.first().reason)
+        assertEquals(AccountNotInitializedViolation, result.violations.first())
     }
 
     @Test
@@ -55,6 +55,6 @@ class TransactionTest {
         val result = subject.commit(account = account)
 
         assertTrue(result.violations.isNotEmpty())
-        assertEquals(CardNotActiveViolation().reason, result.violations.first().reason)
+        assertEquals(CardNotActiveViolation, result.violations.first())
     }
 }

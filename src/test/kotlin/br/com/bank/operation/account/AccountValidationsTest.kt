@@ -22,7 +22,7 @@ class AccountValidationsTest {
         val account = Account(activeCard = true, availableLimit = 100)
         val operationViolation = AccountValidations.accountAlreadyInitializedValidation(account)
 
-        assertEquals(AccountAlreadyInitializedViolation().reason, operationViolation?.reason)
+        assertEquals(AccountAlreadyInitializedViolation, operationViolation!!)
     }
 
     @Test
@@ -42,7 +42,7 @@ class AccountValidationsTest {
         val operationViolation = AccountValidations
                 .insufficientLimitValidation(account = account, transaction = transaction)
 
-        assertEquals(InsufficientLimitViolation().reason, operationViolation?.reason)
+        assertEquals(InsufficientLimitViolation, operationViolation!!)
     }
 
     @Test
@@ -57,7 +57,7 @@ class AccountValidationsTest {
     fun `should return AccountNotInitializedViolation when account is null`() {
         val operationViolation = AccountValidations.readyForTransaction(null)
 
-        assertEquals(AccountNotInitializedViolation().reason, operationViolation?.reason)
+        assertEquals(AccountNotInitializedViolation, operationViolation!!)
     }
 
     @Test
@@ -65,6 +65,6 @@ class AccountValidationsTest {
         val account = Account(activeCard = false, availableLimit = 100)
         val operationViolation = AccountValidations.readyForTransaction(account)
 
-        assertEquals(CardNotActiveViolation().reason, operationViolation?.reason)
+        assertEquals(CardNotActiveViolation, operationViolation!!)
     }
 }

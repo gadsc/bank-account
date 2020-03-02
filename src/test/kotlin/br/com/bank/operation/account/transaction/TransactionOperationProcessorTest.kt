@@ -42,7 +42,7 @@ class TransactionOperationProcessorTest {
         val result = subject.process(transaction)
 
         assertTrue(result.violations.isNotEmpty())
-        assertEquals(AccountNotInitializedViolation().reason, result.violations.first().reason)
+        assertEquals(AccountNotInitializedViolation, result.violations.first())
     }
 
     @Test
@@ -55,6 +55,6 @@ class TransactionOperationProcessorTest {
         val result = subject.process(transaction)
 
         assertTrue(result.violations.isNotEmpty())
-        assertEquals(CardNotActiveViolation().reason, result.violations.first().reason)
+        assertEquals(CardNotActiveViolation, result.violations.first())
     }
 }
