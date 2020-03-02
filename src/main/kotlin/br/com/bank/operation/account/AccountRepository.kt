@@ -9,19 +9,14 @@ object AccountRepository {
 
     fun createAccount(account: Account): OperationResult = accountAlreadyInitializedValidation(createdAccount)
             .let {
-                if (it == null) {
+                it?.let { OperationResult(account = account, violation = it) } ?: run {
                     createdAccount = account
                     OperationResult(createdAccount!!, emptyList())
-                } else OperationResult(
-                        account = account,
-                        violations = listOfNotNull(it)
-                )
+                }
             }
 
-//    fun find(): Account? = createdAccount
-
-    fun updateActiveAccount(account: Account): Account {
+    fun updateActiveAccount(account: Account): OperationResult {
         createdAccount = account
-        return createdAccount!!
+        return OperationResult(account = createdAccount, violations = emptyList())
     }
 }
