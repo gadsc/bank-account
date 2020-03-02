@@ -78,7 +78,7 @@ class AccountTest {
     @Test
     fun `should not commit transaction when insufficient limit and small interval violations`() {
         val transaction = TransactionObjectMother.build(merchant = "New merchant")
-        val subject = AccountObjectMother.build(transactions = listOf(TransactionObjectMother.build(), transaction))
+        val subject = AccountObjectMother.build(availableLimit = 10, transactions = listOf(TransactionObjectMother.build(), transaction))
 
         val result = subject.commitTransaction(transaction = transaction)
 

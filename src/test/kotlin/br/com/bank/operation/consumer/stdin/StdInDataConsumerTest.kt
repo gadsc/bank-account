@@ -31,8 +31,7 @@ class StdInDataConsumerTest {
     @Test
     fun `should return executed operations`() {
         val results = subject.batchProcessing()
-
-        println(results)
+        
         assertEquals(2, results.size)
         assertEquals(accountEvent.activeCard, results[0].account?.activeCard)
         assertEquals(accountEvent.availableLimit, results[0].account?.availableLimit)
