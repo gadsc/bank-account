@@ -1,6 +1,9 @@
 # Bank-Account
 
-### Used Technologies
+### Purpose
+- 
+
+### Technologies
 - Kotlin
 - Gradle
 - Docker
@@ -32,7 +35,7 @@
 {"transaction": {"merchant": "Burger King", "amount": 20, "time": "2019-02-13T11:00:00.000Z" }}
 {"transaction": {"merchant": "Habib's", "amount": 20, "time": "2019-02-13T11:00:00.000Z" }}
 ```
-- If you want to process the events just add a empty line like if you are consuming a unix file (EOL Unix).
+- If you want to process the events just add an empty line like if you are consuming a unix file (EOL Unix).
 
 ### Main decisions
 - Always need to be just one or none account active at the same time.
