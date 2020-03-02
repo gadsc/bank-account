@@ -2,6 +2,9 @@ package br.com.bank.operation.account
 
 import br.com.bank.operation.OperationIdentifier
 import br.com.bank.operation.account.transaction.Transaction
+import br.com.bank.operation.objectMother.AccountObjectMother
+import br.com.bank.operation.objectMother.AccountOperationEventObjectMother
+import br.com.bank.operation.objectMother.TransactionObjectMother
 import br.com.bank.operation.validation.violation.DoubledTransactionViolation
 import br.com.bank.operation.validation.violation.HighFrequencyViolation
 import br.com.bank.operation.validation.violation.InsufficientLimitViolation
@@ -12,7 +15,7 @@ import java.time.ZonedDateTime
 class AccountTest {
     @Test
     fun `should create account from AccountOperationEvent`() {
-        val accountOperationEvent = AccountOperationEvent(true, 100)
+        val accountOperationEvent = AccountOperationEventObjectMother.build()
         val subject = Account.from(accountOperationEvent = accountOperationEvent)
 
         assertEquals(accountOperationEvent.activeCard, subject.activeCard)
@@ -23,9 +26,8 @@ class AccountTest {
 
     @Test
     fun `should commit transaction when not found violations`() {
-        val now = ZonedDateTime.now()
-        val subject = Account(activeCard = true, availableLimit = 100)
-        val transaction = Transaction("Burguer King", 20, time = now)
+        val subject = AccountObjectMother.build()
+        val transaction = TransactionObjectMother.build()
 
         val result = subject.commitTransaction(transaction = transaction)
 
@@ -37,9 +39,8 @@ class AccountTest {
 
     @Test
     fun `should not commit transaction when insufficient limit in account`() {
-        val now = ZonedDateTime.now()
-        val subject = Account(activeCard = true, availableLimit = 10)
-        val transaction = Transaction("Burguer King", 20, time = now)
+        val subject = AccountObjectMother.build(availableLimit = 10)
+        val transaction = TransactionObjectMother.build()
 
         val result = subject.commitTransaction(transaction = transaction)
 
@@ -52,10 +53,8 @@ class AccountTest {
 
     @Test
     fun `should not commit transaction when doubled transaction in a small interval`() {
-        val now = ZonedDateTime.now()
-        val transaction = Transaction("Burguer King", 20, time = now)
-        val subject = Account(activeCard = true, availableLimit = 100, transactions = listOf(transaction))
-
+        val transaction = TransactionObjectMother.build()
+        val subject = AccountObjectMother.build(transactions = listOf(transaction))
 
         val result = subject.commitTransaction(transaction = transaction)
 
@@ -67,13 +66,8 @@ class AccountTest {
 
     @Test
     fun `should not commit transaction when high frequency transactions in a small interval`() {
-        val now = ZonedDateTime.now()
-        val transaction = Transaction("Burguer King", 20, time = now)
-        val transaction2 = Transaction("Burguer King2", 20, time = now)
-        val transaction3 = Transaction("Burguer King3", 20, time = now)
-        val subject = Account(activeCard = true, availableLimit = 200, transactions = listOf(transaction, transaction2))
-
-        val result = subject.commitTransaction(transaction = transaction3)
+        val subject = AccountObjectMother.build(transactions = TransactionObjectMother.buildMany(amountOfTransactions = 2))
+        val result = subject.commitTransaction(transaction = TransactionObjectMother.build())
 
         assertEquals(subject.activeCard, result.account!!.activeCard)
         assertEquals(subject.availableLimit, result.account!!.availableLimit)
@@ -83,12 +77,10 @@ class AccountTest {
 
     @Test
     fun `should not commit transaction when insufficient limit and small interval violations`() {
-        val now = ZonedDateTime.now()
-        val transaction = Transaction("Burguer King", 20, time = now)
-        val transaction2 = Transaction("Burguer King2", 20, time = now)
-        val subject = Account(activeCard = true, availableLimit = 0, transactions = listOf(transaction, transaction2))
+        val transaction = TransactionObjectMother.build(merchant = "New merchant")
+        val subject = AccountObjectMother.build(transactions = listOf(TransactionObjectMother.build(), transaction))
 
-        val result = subject.commitTransaction(transaction = transaction2)
+        val result = subject.commitTransaction(transaction = transaction)
 
         assertEquals(subject.activeCard, result.account!!.activeCard)
         assertEquals(subject.availableLimit, result.account!!.availableLimit)
