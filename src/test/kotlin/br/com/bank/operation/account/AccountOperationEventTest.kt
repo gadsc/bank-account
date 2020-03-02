@@ -1,13 +1,14 @@
 package br.com.bank.operation.account
 
 import br.com.bank.operation.OperationIdentifier
+import br.com.bank.operation.objectMother.AccountOperationEventObjectMother
 import org.junit.Assert.*
 import org.junit.Test
 
 class AccountOperationEventTest {
     @Test
     fun `should convert operation event to operation`() {
-        val subject = AccountOperationEvent(activeCard = true, availableLimit = 100)
+        val subject = AccountOperationEventObjectMother.build()
         val accountOperation = subject.toOperation() as Account
 
         assertEquals(subject.activeCard, accountOperation.activeCard)

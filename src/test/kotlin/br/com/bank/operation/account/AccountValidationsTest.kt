@@ -1,25 +1,26 @@
 package br.com.bank.operation.account
 
-import br.com.bank.operation.account.transaction.Transaction
+import br.com.bank.operation.objectMother.AccountObjectMother
+import br.com.bank.operation.objectMother.TransactionObjectMother
 import br.com.bank.operation.validation.violation.AccountAlreadyInitializedViolation
 import br.com.bank.operation.validation.violation.AccountNotInitializedViolation
 import br.com.bank.operation.validation.violation.CardNotActiveViolation
 import br.com.bank.operation.validation.violation.InsufficientLimitViolation
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
-import java.time.ZonedDateTime
 
 class AccountValidationsTest {
     @Test
     fun `should return null when account not initialized yet`() {
-        val operationViolation = AccountValidations.accountAlreadyInitializedValidation(null)
+        val operationViolation = AccountValidations.accountAlreadyInitializedValidation(account = null)
 
         assertNull(operationViolation)
     }
 
     @Test
     fun `should return AccountAlreadyInitializedViolation when account already initialized`() {
-        val account = Account(activeCard = true, availableLimit = 100)
+        val account = AccountObjectMother.build()
         val operationViolation = AccountValidations.accountAlreadyInitializedValidation(account)
 
         assertEquals(AccountAlreadyInitializedViolation, operationViolation!!)
@@ -27,8 +28,8 @@ class AccountValidationsTest {
 
     @Test
     fun `should return null when account has limit to execute the transaction`() {
-        val account = Account(activeCard = true, availableLimit = 100)
-        val transaction = Transaction(merchant = "Burguer King", amount = 20, time = ZonedDateTime.now())
+        val account = AccountObjectMother.build()
+        val transaction = TransactionObjectMother.build()
         val operationViolation = AccountValidations
                 .insufficientLimitValidation(account = account, transaction = transaction)
 
@@ -37,8 +38,8 @@ class AccountValidationsTest {
 
     @Test
     fun `should return InsufficientLimitViolation when account has not limit to execute the transaction`() {
-        val account = Account(activeCard = true, availableLimit = 10)
-        val transaction = Transaction(merchant = "Burguer King", amount = 20, time = ZonedDateTime.now())
+        val account = AccountObjectMother.build(availableLimit = 10)
+        val transaction = TransactionObjectMother.build()
         val operationViolation = AccountValidations
                 .insufficientLimitValidation(account = account, transaction = transaction)
 
@@ -47,7 +48,7 @@ class AccountValidationsTest {
 
     @Test
     fun `should return null when account is ready for transactions`() {
-        val account = Account(activeCard = true, availableLimit = 100)
+        val account = AccountObjectMother.build()
         val operationViolation = AccountValidations.readyForTransaction(account)
 
         assertNull(operationViolation)
@@ -55,14 +56,14 @@ class AccountValidationsTest {
 
     @Test
     fun `should return AccountNotInitializedViolation when account is null`() {
-        val operationViolation = AccountValidations.readyForTransaction(null)
+        val operationViolation = AccountValidations.readyForTransaction(account = null)
 
         assertEquals(AccountNotInitializedViolation, operationViolation!!)
     }
 
     @Test
     fun `should return CardNotActiveViolation when the card for account is not active`() {
-        val account = Account(activeCard = false, availableLimit = 100)
+        val account = AccountObjectMother.build(activeCard = false)
         val operationViolation = AccountValidations.readyForTransaction(account)
 
         assertEquals(CardNotActiveViolation, operationViolation!!)

@@ -1,7 +1,9 @@
 package br.com.bank.operation.account
 
+import br.com.bank.operation.objectMother.AccountObjectMother
 import br.com.bank.operation.validation.violation.AccountAlreadyInitializedViolation
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -14,7 +16,7 @@ class AccountRepositoryTest {
 
     @Test
     fun `should create account when process the operation`() {
-        val account = Account(activeCard = true, availableLimit = 100)
+        val account = AccountObjectMother.build()
         val operationResult = AccountRepository.createAccount(account)
 
         assertEquals(account.activeCard, operationResult.account?.activeCard)
@@ -25,9 +27,9 @@ class AccountRepositoryTest {
 
     @Test
     fun `should update active account`() {
-        val account = Account(activeCard = true, availableLimit = 100)
+        val account = AccountObjectMother.build()
         AccountRepository.createAccount(account)
-        val updatedAccount = Account(activeCard = true, availableLimit = 50)
+        val updatedAccount = AccountObjectMother.build(availableLimit = 50)
         val operationResult = AccountRepository.updateActiveAccount(updatedAccount)
 
         assertEquals(updatedAccount.activeCard, operationResult.account?.activeCard)
@@ -38,7 +40,7 @@ class AccountRepositoryTest {
 
     @Test
     fun `should not create account when process account already exists`() {
-        val account = Account(activeCard = true, availableLimit = 100)
+        val account = AccountObjectMother.build()
         AccountRepository.createAccount(account)
         val operationResult = AccountRepository.createAccount(account)
 
